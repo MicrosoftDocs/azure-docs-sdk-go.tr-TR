@@ -1,0 +1,25 @@
+items:
+  - name: Go için Azure SDK
+    href: index.yml
+  - name: Genel Bakış
+    items:
+      - name: Yükleme
+        href: azure-sdk-go-install.md
+      - name: Araçlar
+        href: azure-sdk-go-tools.md
+  - name: Go SDK Hızlı başlangıçları
+    items:
+      - name: Sanal Makineler ve Kaynak Şablonları
+        href: azure-sdk-go-qs-vm.md
+      - name: Azure Blob Depolama
+        href: /azure/storage/blobs/storage-quickstart-blobs-go?toc=%2fgo%2fazure%2ftoc.json
+      - name: PostgreSQL için Azure Veritabanı
+        href: /azure/postgresql/connect-go?toc=%2fgo%2fazure%2ftoc.json
+      - name: MySQL için Azure Veritabanı
+        href: /azure/mysql/connect-go?toc=%2fgo%2fazure%2ftoc.json
+      - name: Azure SQL Database
+        href: /azure/sql-database/sql-database-connect-query-go?toc=%2fgo%2fazure%2ftoc.json
+  - name: Örnekler
+    href: 'http://github.com/azure-samples/azure-sdk-for-go-samples'
+  - name: API başvurusu
+    href: 'https://godoc.org/github.com/Azure/azure-sdk-for-go'
