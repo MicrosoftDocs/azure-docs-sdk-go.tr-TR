@@ -8,11 +8,11 @@ ms.date: 02/08/2018
 ms.topic: quickstart
 ms.devlang: go
 manager: routlaw
-ms.openlocfilehash: e530d944deca40e9e6c29b6c2768e2367822714e
-ms.sourcegitcommit: aaa8c37880332625f858a38f5918e6cf581bf48d
+ms.openlocfilehash: ae460dbf21b13c40f3d564274f8b790afe005aae
+ms.sourcegitcommit: af3473779cd7c2978f290fbdc51ee15eb1130840
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 02/15/2018
+ms.lasthandoff: 03/15/2018
 ---
 # <a name="quickstart-deploy-an-azure-virtual-machine-from-a-template-with-the-azure-sdk-for-go"></a>Hızlı başlangıç: Go için Azure SDK ile bir şablondan Azure sanal makinesi dağıtma
 
@@ -32,7 +32,7 @@ Azure CLI’nın yerel bir yüklemesini kullanıyorsanız bu hızlı başlangı�
 
 ## <a name="create-a-service-principal"></a>Hizmet sorumlusu oluşturma
 
-Bir uygulamada etkileşimli olmadan oturum açmak için hizmet sorumlusu gerekir. Hizmet sorumluları, benzersiz bir kullanıcı kimliği oluşturan Rol Tabanlı Kimlik Doğrulaması’nın (RBAC) parçasıdır. CLI ile yeni bir hizmet sorumlusu oluşturmak için aşağıdaki komutu çalıştırın:
+Bir uygulamada etkileşimli olmadan oturum açmak için hizmet sorumlusu gerekir. Hizmet sorumluları, benzersiz bir kullanıcı kimliği oluşturan rol tabanlı erişim denetiminin (RBAC) parçasıdır. CLI ile yeni bir hizmet sorumlusu oluşturmak için aşağıdaki komutu çalıştırın:
 
 ```azurecli-interactive
 az ad sp create-for-rbac --name az-go-vm-quickstart
@@ -40,7 +40,7 @@ az ad sp create-for-rbac --name az-go-vm-quickstart
 
 Çıkıştaki `appId`, `password` ve `tenant` değerlerini kaydettiğinizden __emin olun__. Bu değerler uygulama tarafından Azure kimlik doğrulaması yapmak için kullanılır.
 
-Azure CLI 2.0 ile Hizmet Sorumluları oluşturma ve bunları yönetme hakkında daha fazla bilgi için bkz. [Azure CLI 2.0 ile Azure hizmet sorumlusu oluşturma](/cli/azure/create-an-azure-service-principal-azure-cli).
+Azure CLI 2.0 ile hizmet sorumluları oluşturma ve bunları yönetme hakkında daha fazla bilgi için bkz. [Azure CLI 2.0 ile Azure hizmet sorumlusu oluşturma](/cli/azure/create-an-azure-service-principal-azure-cli).
 
 ## <a name="get-the-code"></a>Kodu alma
 
@@ -79,7 +79,7 @@ Bu kod derlenir, ancak siz Azure hesabınızla ve oluşturulan hizmet sorumlusuy
     }
 ```
 
-* `vm_password`: VM kullanıcı hesabı için parola. 6-72 karakter uzunluğunda olmalı ve şu karakterlerden üçünü içermelidir:
+* `vm_password`: VM kullanıcı hesabı için parola. 12-72 karakter uzunluğunda olmalı ve şu karakterlerden üçünü içermelidir:
   * Bir küçük harf
   * Bir büyük harf
   * Bir rakam
