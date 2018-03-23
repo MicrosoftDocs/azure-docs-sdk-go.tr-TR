@@ -1,18 +1,17 @@
 ---
-title: "Go geliştiricileri için araçlar"
-description: "Go için Azure SDK ve Azure hizmetleri ile çalışmaya ilişkin araçlar"
-keywords: azure, go, golang, azure, visual studio, visual studio code
+title: Go geliştiricileri için araçlar
+description: Go için Azure SDK ve Azure hizmetleri ile çalışmaya ilişkin araçlar
 author: sptramer
 ms.author: sttramer
 ms.date: 01/30/2018
 ms.topic: article
 ms.devlang: go
-manager: routlaw
-ms.openlocfilehash: 4753775e608b39c6da43d64fd08c1532e03d5810
-ms.sourcegitcommit: aaa8c37880332625f858a38f5918e6cf581bf48d
+manager: carmonm
+ms.openlocfilehash: 054965eb1ea4f1a7556e2968dfbe07b2db69d26f
+ms.sourcegitcommit: fcc1786d59d2e32c97a9a8e0748e06f564a961bd
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 02/15/2018
+ms.lasthandoff: 03/23/2018
 ---
 # <a name="tools-for-developers-using-the-azure-sdk-for-go"></a>Go için Azure SDK’yı kullanan geliştiriciler için araçlar
 

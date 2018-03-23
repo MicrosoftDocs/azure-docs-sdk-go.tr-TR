@@ -1,18 +1,17 @@
 ---
-title: "Go’dan bir Azure sanal makinesini dağıtma"
-description: "Go için Azure SDK’yı kullanarak bir sanal makineyi dağıtın."
-keywords: azure, sanal makine, vm, go, golang, azure sdk
+title: Go’dan bir Azure sanal makinesini dağıtma
+description: Go için Azure SDK’yı kullanarak bir sanal makineyi dağıtın.
 author: sptramer
 ms.author: sttramer
 ms.date: 02/08/2018
 ms.topic: quickstart
 ms.devlang: go
-manager: routlaw
-ms.openlocfilehash: ae460dbf21b13c40f3d564274f8b790afe005aae
-ms.sourcegitcommit: af3473779cd7c2978f290fbdc51ee15eb1130840
+manager: carmonm
+ms.openlocfilehash: 46a1243ff2ff6bfcf3831e2cea3137c1f6051c78
+ms.sourcegitcommit: fcc1786d59d2e32c97a9a8e0748e06f564a961bd
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 03/15/2018
+ms.lasthandoff: 03/23/2018
 ---
 # <a name="quickstart-deploy-an-azure-virtual-machine-from-a-template-with-the-azure-sdk-for-go"></a>Hızlı başlangıç: Go için Azure SDK ile bir şablondan Azure sanal makinesi dağıtma
 
