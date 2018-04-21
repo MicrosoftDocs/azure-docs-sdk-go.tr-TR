@@ -7,6 +7,8 @@ items:
         href: azure-sdk-go-install.md
       - name: Araçlar
         href: azure-sdk-go-tools.md
+      - name: Kimlik Doğrulaması
+        href: azure-sdk-go-authorization.md
   - name: Go SDK Hızlı başlangıçları
     items:
       - name: Sanal Makineler ve Kaynak Şablonları
