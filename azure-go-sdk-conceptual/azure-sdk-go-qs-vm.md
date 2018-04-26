@@ -3,130 +3,85 @@ title: Go’dan bir Azure sanal makinesini dağıtma
 description: Go için Azure SDK’yı kullanarak bir sanal makineyi dağıtın.
 author: sptramer
 ms.author: sttramer
-ms.date: 02/08/2018
+ms.date: 04/03/2018
 ms.topic: quickstart
 ms.devlang: go
 manager: carmonm
-ms.openlocfilehash: 46a1243ff2ff6bfcf3831e2cea3137c1f6051c78
-ms.sourcegitcommit: fcc1786d59d2e32c97a9a8e0748e06f564a961bd
+ms.openlocfilehash: 565580e9e6c6ced543bd00bbaa01383834d9a41c
+ms.sourcegitcommit: 2b2884ea7673c95ba45b3d6eec647200e75bfc5b
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 03/23/2018
+ms.lasthandoff: 04/19/2018
 ---
-# <a name="quickstart-deploy-an-azure-virtual-machine-from-a-template-with-the-azure-sdk-for-go"></a><span data-ttu-id="68ac6-103">Hızlı başlangıç: Go için Azure SDK ile bir şablondan Azure sanal makinesi dağıtma</span><span class="sxs-lookup"><span data-stu-id="68ac6-103">Quickstart: Deploy an Azure virtual machine from a template with the Azure SDK for Go</span></span>
+# <a name="quickstart-deploy-an-azure-virtual-machine-from-a-template-with-the-azure-sdk-for-go"></a><span data-ttu-id="f0ffb-103">Hızlı başlangıç: Go için Azure SDK ile bir şablondan Azure sanal makinesi dağıtma</span><span class="sxs-lookup"><span data-stu-id="f0ffb-103">Quickstart: Deploy an Azure virtual machine from a template with the Azure SDK for Go</span></span>
 
-<span data-ttu-id="68ac6-104">Bu hızlı başlangıç, Go için Azure SDK ile bir şablondan kaynakları dağıtmaya odaklanır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-104">This quickstart focuses on deploying resources from a template with the Azure SDK for Go.</span></span> <span data-ttu-id="68ac6-105">Şablonlar, [Azure kaynak grubu](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview) içinde bulunan tüm kaynakların anlık görüntüleridir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-105">Templates are snapshots of all of the resources contained within an [Azure resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview).</span></span> <span data-ttu-id="68ac6-106">İlerledikçe, kullanışlı bir görevi gerçekleştirirken SDK’nın işlevlerini ve kurallarını öğreneceksiniz.</span><span class="sxs-lookup"><span data-stu-id="68ac6-106">Along the way, you'll become familiar with the functionality and conventions of the SDK while performing a useful task.</span></span>
+<span data-ttu-id="f0ffb-104">Bu hızlı başlangıç, Go için Azure SDK ile bir şablondan kaynakları dağıtmaya odaklanır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-104">This quickstart focuses on deploying resources from a template with the Azure SDK for Go.</span></span> <span data-ttu-id="f0ffb-105">Şablonlar, [Azure kaynak grubu](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview) içinde bulunan tüm kaynakların anlık görüntüleridir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-105">Templates are snapshots of all of the resources contained within an [Azure resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview).</span></span> <span data-ttu-id="f0ffb-106">İlerledikçe, kullanışlı bir görevi gerçekleştirirken SDK’nın işlevlerini ve kurallarını öğreneceksiniz.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-106">Along the way, you'll become familiar with the functionality and conventions of the SDK while performing a useful task.</span></span>
 
-<span data-ttu-id="68ac6-107">Bu hızlı başlangıcın sonunda, bir kullanıcı adı ve parola ile oturum açtığınız çalışan bir sanal makineniz olacaktır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-107">At the end of this quickstart, you have a running VM that you log into with a username and password.</span></span>
+<span data-ttu-id="f0ffb-107">Bu hızlı başlangıcın sonunda, bir kullanıcı adı ve parola ile oturum açtığınız çalışan bir sanal makineniz olacaktır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-107">At the end of this quickstart, you have a running VM that you log into with a username and password.</span></span>
 
 [!INCLUDE [quickstarts-free-trial-note](includes/quickstarts-free-trial-note.md)]
 
 [!INCLUDE [cloud-shell-try-it.md](includes/cloud-shell-try-it.md)]
 
-<span data-ttu-id="68ac6-108">Azure CLI’nın yerel bir yüklemesini kullanıyorsanız bu hızlı başlangıç, 2.0.24 veya sonraki sürümleri gerektirir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-108">If you use a local install of the Azure CLI, this quickstart requires CLI version 2.0.24 or later.</span></span> <span data-ttu-id="68ac6-109">CLI yüklemenizin bu gereksinimi karşıladığından emin olmak için `az --version` çalıştırın.</span><span class="sxs-lookup"><span data-stu-id="68ac6-109">Run `az --version` to make sure your CLI install meets this requirement.</span></span> <span data-ttu-id="68ac6-110">Yükleme veya yükseltme yapmanız gerekirse [Azure CLI 2.0’ı yükleyin](/cli/azure/install-azure-cli).</span><span class="sxs-lookup"><span data-stu-id="68ac6-110">If you need to install or upgrade, see [Install the Azure CLI 2.0](/cli/azure/install-azure-cli).</span></span>
+<span data-ttu-id="f0ffb-108">Azure CLI’nın yerel bir yüklemesini kullanıyorsanız bu hızlı başlangıç, __2.0.28__ veya sonraki CLI sürümlerini gerektirir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-108">If you use a local install of the Azure CLI, this quickstart requires CLI version __2.0.28__ or later.</span></span> <span data-ttu-id="f0ffb-109">CLI yüklemenizin bu gereksinimi karşıladığından emin olmak için `az --version` çalıştırın.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-109">Run `az --version` to make sure your CLI install meets this requirement.</span></span> <span data-ttu-id="f0ffb-110">Yükleme veya yükseltme yapmanız gerekirse [Azure CLI 2.0’ı yükleyin](/cli/azure/install-azure-cli).</span><span class="sxs-lookup"><span data-stu-id="f0ffb-110">If you need to install or upgrade, see [Install the Azure CLI 2.0](/cli/azure/install-azure-cli).</span></span>
 
-## <a name="install-the-azure-sdk-for-go"></a><span data-ttu-id="68ac6-111">Go için Azure SDK’yı yükleme</span><span class="sxs-lookup"><span data-stu-id="68ac6-111">Install the Azure SDK for Go</span></span> 
+## <a name="install-the-azure-sdk-for-go"></a><span data-ttu-id="f0ffb-111">Go için Azure SDK’yı yükleme</span><span class="sxs-lookup"><span data-stu-id="f0ffb-111">Install the Azure SDK for Go</span></span> 
 
 [!INCLUDE [azure-sdk-go-get](includes/azure-sdk-go-get.md)]
 
-## <a name="create-a-service-principal"></a><span data-ttu-id="68ac6-112">Hizmet sorumlusu oluşturma</span><span class="sxs-lookup"><span data-stu-id="68ac6-112">Create a service principal</span></span>
+## <a name="create-a-service-principal"></a><span data-ttu-id="f0ffb-112">Hizmet sorumlusu oluşturma</span><span class="sxs-lookup"><span data-stu-id="f0ffb-112">Create a service principal</span></span>
 
-<span data-ttu-id="68ac6-113">Bir uygulamada etkileşimli olmadan oturum açmak için hizmet sorumlusu gerekir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-113">To log in non-interactively with an application, you need a service principal.</span></span> <span data-ttu-id="68ac6-114">Hizmet sorumluları, benzersiz bir kullanıcı kimliği oluşturan rol tabanlı erişim denetiminin (RBAC) parçasıdır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-114">Service principals are part of role-based access control (RBAC), which creates a unique user identity.</span></span> <span data-ttu-id="68ac6-115">CLI ile yeni bir hizmet sorumlusu oluşturmak için aşağıdaki komutu çalıştırın:</span><span class="sxs-lookup"><span data-stu-id="68ac6-115">To create a new service principal with the CLI, run the following command:</span></span>
+
+<span data-ttu-id="f0ffb-113">Bir uygulamada etkileşimli olmadan oturum açmak için hizmet sorumlusu gerekir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-113">To log in non-interactively with an application, you need a service principal.</span></span> <span data-ttu-id="f0ffb-114">Hizmet sorumluları, benzersiz bir kullanıcı kimliği oluşturan rol tabanlı erişim denetiminin (RBAC) parçasıdır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-114">Service principals are part of role-based access control (RBAC), which creates a unique user identity.</span></span> <span data-ttu-id="f0ffb-115">CLI ile yeni bir hizmet sorumlusu oluşturmak için aşağıdaki komutu çalıştırın:</span><span class="sxs-lookup"><span data-stu-id="f0ffb-115">To create a new service principal with the CLI, run the following command:</span></span>
 
 ```azurecli-interactive
-az ad sp create-for-rbac --name az-go-vm-quickstart
+az ad sp create-for-rbac --name az-go-vm-quickstart --sdk-auth > quickstart.auth
 ```
 
-<span data-ttu-id="68ac6-116">Çıkıştaki `appId`, `password` ve `tenant` değerlerini kaydettiğinizden __emin olun__.</span><span class="sxs-lookup"><span data-stu-id="68ac6-116">__Make sure__ to record the `appId`, `password`, and `tenant` values in the output.</span></span> <span data-ttu-id="68ac6-117">Bu değerler uygulama tarafından Azure kimlik doğrulaması yapmak için kullanılır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-117">These values are used by the application to authenticate with Azure.</span></span>
+<span data-ttu-id="f0ffb-116">`AZURE_AUTH_LOCATION` ortam değişkenini bu dosyaya giden tam yol olacak şekilde ayarlayın.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-116">Set the environment variable `AZURE_AUTH_LOCATION` to be the full path to this file.</span></span> <span data-ttu-id="f0ffb-117">Daha sonra hizmet sorumlusundan herhangi bir değişiklik yapmanıza veya bilgi kaydetmenize gerek kalmadan SDK kimlik bilgilerini bulur ve doğrudan bu dosyadan okur.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-117">Then the SDK locates and reads the credentials directly from this file, without you having to make any changes or record information from the service principal.</span></span>
 
-<span data-ttu-id="68ac6-118">Azure CLI 2.0 ile hizmet sorumluları oluşturma ve bunları yönetme hakkında daha fazla bilgi için bkz. [Azure CLI 2.0 ile Azure hizmet sorumlusu oluşturma](/cli/azure/create-an-azure-service-principal-azure-cli).</span><span class="sxs-lookup"><span data-stu-id="68ac6-118">For more information on creating and managing service principals with the Azure CLI 2.0, see [Create an Azure service principal with Azure CLI 2.0](/cli/azure/create-an-azure-service-principal-azure-cli).</span></span>
+## <a name="get-the-code"></a><span data-ttu-id="f0ffb-118">Kodu alma</span><span class="sxs-lookup"><span data-stu-id="f0ffb-118">Get the code</span></span>
 
-## <a name="get-the-code"></a><span data-ttu-id="68ac6-119">Kodu alma</span><span class="sxs-lookup"><span data-stu-id="68ac6-119">Get the code</span></span>
-
-<span data-ttu-id="68ac6-120">`go get` ile hızlı başlangıç kodunu ve tüm bağımlılıklarını edinin.</span><span class="sxs-lookup"><span data-stu-id="68ac6-120">Get the quickstart code and all of its dependencies with `go get`.</span></span>
+<span data-ttu-id="f0ffb-119">`go get` ile hızlı başlangıç kodunu ve tüm bağımlılıklarını edinin.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-119">Get the quickstart code and all of its dependencies with `go get`.</span></span>
 
 ```bash
-go get -u -d github.com/azure-samples/azure-sdk-for-go-samples/quickstart/deploy-vm/...
+go get -u -d github.com/azure-samples/azure-sdk-for-go-samples/quickstarts/deploy-vm/...
 ```
 
-<span data-ttu-id="68ac6-121">Bu kod derlenir, ancak siz Azure hesabınızla ve oluşturulan hizmet sorumlusuyla ilgili bilgileri sağlayıncaya kadar düzgün çalışmaz.</span><span class="sxs-lookup"><span data-stu-id="68ac6-121">This code compiles, but doesn't run correctly until you provide it information about your Azure account and the created service principal.</span></span> <span data-ttu-id="68ac6-122">`main.go` içinde, bir `authInfo` yapısı içeren `config` değişkeni vardır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-122">In `main.go` there is a variable, `config`, which contains an `authInfo` struct.</span></span> <span data-ttu-id="68ac6-123">Bu yapının düzgün şekilde kimlik doğrulaması yapması için alan değerlerinin değiştirilmesi gerekir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-123">This struct needs to have its field values replaced in order to authenticate correctly.</span></span>
+<span data-ttu-id="f0ffb-120">`AZURE_AUTH_LOCATION` değişkeni düzgün şekilde ayarlanmışsa kaynak kodunda herhangi bir değişiklik yapmanız gerekmez.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-120">You don't need to make any source code modifications if the `AZURE_AUTH_LOCATION` variable is properly set.</span></span> <span data-ttu-id="f0ffb-121">Program çalıştığında, gerekli olan tüm kimlik doğrulama bilgilerini buradan yükler.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-121">When the program runs, it loads all the necessary authentication information from there.</span></span>
 
-```go
-    config = authInfo{ // Your application credentials
-        TenantID:               "", // Azure account tenantID
-        SubscriptionID:         "", // Azure subscription subscriptionID
-        ServicePrincipalID:     "", // Service principal appId
-        ServicePrincipalSecret: "", // Service principal password/secret
-    }
-```
+## <a name="running-the-code"></a><span data-ttu-id="f0ffb-122">Kodu çalıştırma</span><span class="sxs-lookup"><span data-stu-id="f0ffb-122">Running the code</span></span>
 
-* <span data-ttu-id="68ac6-124">`SubscriptionID`: CLI komutundan alınabilen abonelik kimliğiniz</span><span class="sxs-lookup"><span data-stu-id="68ac6-124">`SubscriptionID`: Your subscription ID, which can be obtained from the CLI command</span></span>
-
-  ```azurecli-interactive
-  az account show --query id -o tsv
-  ```
-
-* <span data-ttu-id="68ac6-125">`TenantID`: Hizmet sorumlusu oluşturulurken kaydedilen `tenant` değeri olan kiracı kimliğiniz</span><span class="sxs-lookup"><span data-stu-id="68ac6-125">`TenantID`: Your tenant ID, the `tenant` value recorded when creating the service principal</span></span>
-* <span data-ttu-id="68ac6-126">`ServicePrincipalID`: Hizmet sorumlusu oluşturulurken kaydedilen `appId` değeri</span><span class="sxs-lookup"><span data-stu-id="68ac6-126">`ServicePrincipalID`: The `appId` value recorded when creating the service principal</span></span>
-* <span data-ttu-id="68ac6-127">`ServicePrincipalSecret`: Hizmet sorumlusu oluşturulurken kaydedilen `password` değeri</span><span class="sxs-lookup"><span data-stu-id="68ac6-127">`ServicePrincipalSecret`: The `password` value recorded when creating the service principal</span></span>
-
-<span data-ttu-id="68ac6-128">`vm-quickstart-params.json` dosyasındaki bir değeri de düzenlemeniz gerekir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-128">You also need to edit a value in the `vm-quickstart-params.json` file.</span></span>
-
-```json
-    "vm_password": {
-        "value": "_"
-    }
-```
-
-* <span data-ttu-id="68ac6-129">`vm_password`: VM kullanıcı hesabı için parola.</span><span class="sxs-lookup"><span data-stu-id="68ac6-129">`vm_password`: The password for the VM user account.</span></span> <span data-ttu-id="68ac6-130">12-72 karakter uzunluğunda olmalı ve şu karakterlerden üçünü içermelidir:</span><span class="sxs-lookup"><span data-stu-id="68ac6-130">It must be 12-72 characters in length and contain 3 of the following characters:</span></span>
-  * <span data-ttu-id="68ac6-131">Bir küçük harf</span><span class="sxs-lookup"><span data-stu-id="68ac6-131">A lowercase letter</span></span>
-  * <span data-ttu-id="68ac6-132">Bir büyük harf</span><span class="sxs-lookup"><span data-stu-id="68ac6-132">An uppercase letter</span></span>
-  * <span data-ttu-id="68ac6-133">Bir rakam</span><span class="sxs-lookup"><span data-stu-id="68ac6-133">A number</span></span>
-  * <span data-ttu-id="68ac6-134">Bir sembol</span><span class="sxs-lookup"><span data-stu-id="68ac6-134">A symbol</span></span>
-
-## <a name="running-the-code"></a><span data-ttu-id="68ac6-135">Kodu çalıştırma</span><span class="sxs-lookup"><span data-stu-id="68ac6-135">Running the code</span></span>
-
-<span data-ttu-id="68ac6-136">`go run` komutu ile hızlı başlangıcı çalıştırın.</span><span class="sxs-lookup"><span data-stu-id="68ac6-136">Run the quickstart with the `go run` command.</span></span>
+<span data-ttu-id="f0ffb-123">`go run` komutu ile hızlı başlangıcı çalıştırın.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-123">Run the quickstart with the `go run` command.</span></span>
 
 ```bash
-cd $GOPATH/src/github.com/azure-samples/azure-sdk-for-go-samples/quickstart/deploy-vm
+cd $GOPATH/src/github.com/azure-samples/azure-sdk-for-go-samples/quickstarts/deploy-vm
 go run main.go
 ```
 
-<span data-ttu-id="68ac6-137">Dağıtımda bir hata varsa bir sorun olduğunu belirten ancak özel ayrıntıları içermeyen bir ileti alırsınız.</span><span class="sxs-lookup"><span data-stu-id="68ac6-137">If there is a failure in the deployment, you get a message indicating that there was an issue, but without any specific details.</span></span> <span data-ttu-id="68ac6-138">Azure CLI’yı kullanarak aşağıdaki komut ile dağıtım hatasının ayrıntılarını alın:</span><span class="sxs-lookup"><span data-stu-id="68ac6-138">Using the Azure CLI, get the details of the deployment failure with the following command:</span></span>
+<span data-ttu-id="f0ffb-124">Dağıtımda bir hata varsa bir sorun olduğunu belirten ancak yeterli ayrıntıları içermemiş olabilen bir ileti alırsınız.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-124">If there is a failure in the deployment, you get a message indicating that there was an issue, but it may not include enough detail.</span></span> <span data-ttu-id="f0ffb-125">Azure CLI’yı kullanarak aşağıdaki komut ile dağıtım hatasının tam ayrıntılarını alın:</span><span class="sxs-lookup"><span data-stu-id="f0ffb-125">Using the Azure CLI, get the full details of the deployment failure with the following command:</span></span>
 
 ```azurecli-interactive
 az group deployment show -g GoVMQuickstart -n VMDeployQuickstart
 ```
 
-<span data-ttu-id="68ac6-139">Dağıtım başarılı olursa yeni oluşturulan sanal makinede oturum açmak için kullanıcı adını, IP adresini ve parolayı sunan bir ileti görürsünüz.</span><span class="sxs-lookup"><span data-stu-id="68ac6-139">If the deployment is successful, you see a message giving the username, IP address, and password for logging into the newly created virtual machine.</span></span> <span data-ttu-id="68ac6-140">Çalışır durumda olduğunu onaylamak için bu makinede SSH işlemi yapın.</span><span class="sxs-lookup"><span data-stu-id="68ac6-140">SSH into this machine to confirm that it is up and running.</span></span>
+<span data-ttu-id="f0ffb-126">Dağıtım başarılı olursa yeni oluşturulan sanal makinede oturum açmak için kullanıcı adını, IP adresini ve parolayı sunan bir ileti görürsünüz.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-126">If the deployment is successful, you see a message giving the username, IP address, and password for logging into the newly created virtual machine.</span></span> <span data-ttu-id="f0ffb-127">Çalışır durumda olduğunu onaylamak için bu makinede SSH işlemi yapın.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-127">SSH into this machine to confirm that it is up and running.</span></span>
 
-## <a name="cleaning-up"></a><span data-ttu-id="68ac6-141">Temizleme</span><span class="sxs-lookup"><span data-stu-id="68ac6-141">Cleaning up</span></span>
+## <a name="cleaning-up"></a><span data-ttu-id="f0ffb-128">Temizleme</span><span class="sxs-lookup"><span data-stu-id="f0ffb-128">Cleaning up</span></span>
 
-<span data-ttu-id="68ac6-142">CLI ile kaynak grubunu silerek bu hızlı başlangıç sırasında oluşturulan kaynakları temizleyin.</span><span class="sxs-lookup"><span data-stu-id="68ac6-142">Clean up the resources created during this quickstart by deleting the resource group with the CLI.</span></span>
+<span data-ttu-id="f0ffb-129">CLI ile kaynak grubunu silerek bu hızlı başlangıç sırasında oluşturulan kaynakları temizleyin.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-129">Clean up the resources created during this quickstart by deleting the resource group with the CLI.</span></span>
 
 ```azurecli-interactive
 az group delete -n GoVMQuickstart
 ```
 
-## <a name="code-in-depth"></a><span data-ttu-id="68ac6-143">Kod ayrıntıları</span><span class="sxs-lookup"><span data-stu-id="68ac6-143">Code in depth</span></span>
+## <a name="code-in-depth"></a><span data-ttu-id="f0ffb-130">Kod ayrıntıları</span><span class="sxs-lookup"><span data-stu-id="f0ffb-130">Code in depth</span></span>
 
-<span data-ttu-id="68ac6-144">Hızlı başlangıç kodunun yaptığı işlem bir değişken öbeğine ve birçok küçük işleve ayrılmış ve her biri burada incelenmiştir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-144">What the quickstart code does is broken down into a block of variables and several small functions, each of which are discussed here.</span></span>
+<span data-ttu-id="f0ffb-131">Hızlı başlangıç kodunun yaptığı işlem bir değişken öbeğine ve birçok küçük işleve ayrılmış ve her biri burada incelenmiştir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-131">What the quickstart code does is broken down into a block of variables and several small functions, each of which are discussed here.</span></span>
 
-### <a name="variable-assignments-and-structs"></a><span data-ttu-id="68ac6-145">Değişken atamaları ve yapıları</span><span class="sxs-lookup"><span data-stu-id="68ac6-145">Variable assignments and structs</span></span>
+### <a name="variables-constants-and-types"></a><span data-ttu-id="f0ffb-132">Değişkenler, sabitler ve türler</span><span class="sxs-lookup"><span data-stu-id="f0ffb-132">Variables, constants, and types</span></span>
 
-<span data-ttu-id="68ac6-146">Hızlı başlangıç kendi içinde bulunduğundan, komut satırı seçenekleri veya ortam değişkenleri yerine genel değişkenleri kullanır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-146">Since quickstart is self-contained, it uses global variables rather than command-line options or environment variables.</span></span>
-
-```go
-type authInfo struct {
-        TenantID               string
-        SubscriptionID         string
-        ServicePrincipalID     string
-        ServicePrincipalSecret string
-}
-```
-
-<span data-ttu-id="68ac6-147">Azure hizmetlerinde kimlik doğrulaması yapmak için gerekli tüm bilgileri kapsüllemek için `authInfo` yapısı bildirilir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-147">The `authInfo` struct is declared to encapsulate all of the information needed for authorization with Azure services.</span></span>
+<span data-ttu-id="f0ffb-133">Hızlı başlangıç kendi içinde olduğundan, genel sabitleri ve değişkenleri kullanır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-133">Since quickstart is self-contained, it uses global constants and variables.</span></span>
 
 ```go
 const (
@@ -138,54 +93,51 @@ const (
     parametersFile = "vm-quickstart-params.json"
 )
 
+// Information loaded from the authorization file to identify the client
+type clientInfo struct {
+    SubscriptionID string
+    VMPassword     string
+}
+
 var (
-    config = authInfo{ // Your application credentials
-        TenantID:               "", // Azure account tenantID
-        SubscriptionID:         "", // Azure subscription subscriptionID
-        ServicePrincipalID:     "", // Service principal appId
-        ServicePrincipalSecret: "", // Service principal password/secret
-    }
-
-    ctx = context.Background()
-
-    token *adal.ServicePrincipalToken
+    ctx        = context.Background()
+    clientData clientInfo
+    authorizer autorest.Authorizer
 )
 ```
 
-<span data-ttu-id="68ac6-148">Oluşturulan kaynakların adlarını veren değerler bildirilir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-148">Values are declared which give the names of created resources.</span></span> <span data-ttu-id="68ac6-149">Burada konum da belirtilir; dağıtımların diğer veri merkezlerinde nasıl davrandığını görmek için konumu değiştirebilirsiniz.</span><span class="sxs-lookup"><span data-stu-id="68ac6-149">The location is also specified here, which you can change to see how deployments behave in other datacenters.</span></span> <span data-ttu-id="68ac6-150">Her veri merkezinde tüm gerekli kaynaklar mevcut değildir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-150">Not every datacenter has all of the required resources available.</span></span>
+<span data-ttu-id="f0ffb-134">Oluşturulan kaynakların adlarını veren değerler bildirilir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-134">Values are declared which give the names of created resources.</span></span> <span data-ttu-id="f0ffb-135">Burada konum da belirtilir; dağıtımların diğer veri merkezlerinde nasıl davrandığını görmek için konumu değiştirebilirsiniz.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-135">The location is also specified here, which you can change to see how deployments behave in other datacenters.</span></span> <span data-ttu-id="f0ffb-136">Her veri merkezinde tüm gerekli kaynaklar mevcut değildir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-136">Not every datacenter has all of the required resources available.</span></span>
 
-<span data-ttu-id="68ac6-151">`templateFile` ve `parametersFile` sabitleri, dağıtım için gerekli dosyaları işaret eder.</span><span class="sxs-lookup"><span data-stu-id="68ac6-151">The `templateFile` and `parametersFile` constants point to the files needed for deployment.</span></span> <span data-ttu-id="68ac6-152">Hizmet sorumlusu belirteci daha sonra ele alınacaktır. `ctx` değişkeni, ağ işlemleri için [Go bağlamıdır](https://blog.golang.org/context).</span><span class="sxs-lookup"><span data-stu-id="68ac6-152">The service principal token is covered later, and the `ctx` variable is a [Go context](https://blog.golang.org/context) for the network operations.</span></span>
+<span data-ttu-id="f0ffb-137">`clientInfo` türü, SDK’da istemcileri ve VM parolasını ayarlamak üzere kimlik doğrulama dosyasından bağımsız olarak yüklenmesi gereken bilgileri kapsayacak şekilde bildirilmiştir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-137">The `clientInfo` type is declared to encapsulate all of the information that must be independently loaded from the authentication file to set up clients in the SDK and set the VM password.</span></span>
 
-### <a name="init-and-authorization"></a><span data-ttu-id="68ac6-153">init() ve yetkilendirme</span><span class="sxs-lookup"><span data-stu-id="68ac6-153">init() and authorization</span></span>
+<span data-ttu-id="f0ffb-138">`templateFile` ve `parametersFile` sabitleri, dağıtım için gerekli dosyaları işaret eder.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-138">The `templateFile` and `parametersFile` constants point to the files needed for deployment.</span></span> <span data-ttu-id="f0ffb-139">`authorizer` değişkeni kimlik doğrulaması için Go SDK’sı tarafından yapılandırılır ve `ctx` değişkeni ise ağ işlemleri için bir [Go bağlamıdır](https://blog.golang.org/context).</span><span class="sxs-lookup"><span data-stu-id="f0ffb-139">The `authorizer` will be configured by the Go SDK for authentication, and the `ctx` variable is a [Go context](https://blog.golang.org/context) for the network operations.</span></span>
 
-<span data-ttu-id="68ac6-154">Kod için `init()` yöntemi, yetkilendirmeyi ayarlar.</span><span class="sxs-lookup"><span data-stu-id="68ac6-154">The `init()` method for the code sets up authorization.</span></span> <span data-ttu-id="68ac6-155">Yetkilendirme, hızlı başlangıçtaki her şey için önkoşul olduğundan, başlatmanın parçası olması mantıklıdır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-155">Since authorization is a precondition for everything in the quickstart, it makes sense to have it as part of initialization.</span></span> 
+### <a name="authentication-and-initialization"></a><span data-ttu-id="f0ffb-140">Kimlik doğrulama ve başlatma</span><span class="sxs-lookup"><span data-stu-id="f0ffb-140">Authentication and initialization</span></span>
+
+<span data-ttu-id="f0ffb-141">`init` işlevi kimlik doğrulamayı ayarlar.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-141">The `init` function sets up authentication.</span></span> <span data-ttu-id="f0ffb-142">Yetkilendirme, hızlı başlangıçtaki her şey için önkoşul olduğundan, başlatmanın parçası olması mantıklıdır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-142">Since authentication is a precondition for everything in the quickstart, it makes sense to have it as part of initialization.</span></span> <span data-ttu-id="f0ffb-143">Ayrıca istemcileri ve VM’yi yapılandırmak için kimlik doğrulama dosyasından gerekli olan bazı bilgileri yükler.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-143">It also loads some information needed from the authentication file to configure clients and the VM.</span></span>
 
 ```go
-// Authenticate with the Azure services over OAuth, using a service principal.
 func init() {
-    oauthConfig, err := adal.NewOAuthConfig(azure.PublicCloud.ActiveDirectoryEndpoint, config.TenantID)
+    var err error
+    authorizer, err = auth.NewAuthorizerFromFile(azure.PublicCloud.ResourceManagerEndpoint)
     if err != nil {
-        log.Fatalf("Failed to get OAuth config: %v\n", err)
+        log.Fatalf("Failed to get OAuth config: %v", err)
     }
-    token, err = adal.NewServicePrincipalToken(
-        *oauthConfig,
-        config.ServicePrincipalID,
-        config.ServicePrincipalSecret,
-        azure.PublicCloud.ResourceManagerEndpoint)
-    if err != nil {
-        log.Fatalf("faled to get token: %v\n", err)
-    }
+
+    authInfo, err := readJSON(os.Getenv("AZURE_AUTH_LOCATION"))
+    clientData.SubscriptionID = (*authInfo)["subscriptionId"].(string)
+    clientData.VMPassword = (*authInfo)["clientSecret"].(string)
 }
 ```
 
-<span data-ttu-id="68ac6-156">Bu kod, yetkilendirme için iki adımı tamamlar:</span><span class="sxs-lookup"><span data-stu-id="68ac6-156">This code completes two steps for authorization:</span></span>
+<span data-ttu-id="f0ffb-144">İlk olarak, `AZURE_AUTH_LOCATION` konumunda bulunan dosyadan kimlik doğrulama bilgilerini yüklemek için [auth.NewAuthorizerFromFile](https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth#NewAuthorizerFromFile) çağrılır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-144">First, [auth.NewAuthorizerFromFile](https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth#NewAuthorizerFromFile) is called to load the authentication information from the file located at `AZURE_AUTH_LOCATION`.</span></span> <span data-ttu-id="f0ffb-145">Ardından dosya `readJSON` işlevi tarafından el ile yüklenerek (burada göz ardı edilir), programın geri kalanını çalıştırmak için gereken iki değerin çekilmesi sağlanır: İstemcinin abonelik kimliği ve VM’nin parolası için de kullanılan hizmet sorumlusunun gizli dizisi.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-145">Next, this file is loaded manually by the `readJSON` function (omitted here) to pull the two values needed to run the rest of the program: The subscription ID of the client, and the service principal's secret, which is also used for the VM's password.</span></span>
 
-* <span data-ttu-id="68ac6-157">`TenantID` için OAuth yapılandırma bilgileri, Azure Active Directory ile arabirim oluşturularak alınır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-157">OAuth configuration information for the `TenantID` is retrieved by interfacing with Azure Active Directory.</span></span> <span data-ttu-id="68ac6-158">[`azure.PublicCloud`](https://godoc.org/github.com/Azure/go-autorest/autorest/azure#PublicCloud) nesnesi, standart Azure yapılandırmasında kullanılan uç noktaları içerir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-158">The [`azure.PublicCloud`](https://godoc.org/github.com/Azure/go-autorest/autorest/azure#PublicCloud) object contains endpoints used in the standard Azure configuration.</span></span>
-* <span data-ttu-id="68ac6-159">[`adal.NewServicePrincipalToken()`](https://godoc.org/github.com/Azure/go-autorest/autorest/adal#NewServicePrincipalToken) işlevi çağrılır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-159">The [`adal.NewServicePrincipalToken()`](https://godoc.org/github.com/Azure/go-autorest/autorest/adal#NewServicePrincipalToken) function is called.</span></span> <span data-ttu-id="68ac6-160">Bu işlev, hangi Azure yönetimi stilinin kullanılmakta olduğu bilgisinin yanı sıra, hizmet sorumlusu oturum açma adı ile birlikte OAuth bilgilerini alır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-160">This function takes the OAuth information along with the service principal login, as well as which style of Azure management is being used.</span></span> <span data-ttu-id="68ac6-161">Belirli gereksinimlere sahip değilseniz ve ne yaptığınızı bilmiyorsanız bu değer her zaman `.ResourceManagerEndpoint` olmalıdır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-161">Unless you have specific requirements and know what you're doing, this value should always be `.ResourceManagerEndpoint`.</span></span>
+> [!WARNING]
+> <span data-ttu-id="f0ffb-146">Hızlı başlangıcı basit tutmak için hizmet sorumlusu parolası yeniden kullanılır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-146">To keep the quickstart simple, the service principal password is reused.</span></span> <span data-ttu-id="f0ffb-147">Üretimdeyken Azure kaynaklarınıza erişim sağlayan bir parolayı __asla__ yeniden kullanmamaya dikkat edin.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-147">In production, take care to __never__ reuse a password which gives access to your Azure resources.</span></span>
 
-### <a name="flow-of-operations-in-main"></a><span data-ttu-id="68ac6-162">main() içindeki işlem akışı</span><span class="sxs-lookup"><span data-stu-id="68ac6-162">Flow of operations in main()</span></span>
+### <a name="flow-of-operations-in-main"></a><span data-ttu-id="f0ffb-148">main() içindeki işlem akışı</span><span class="sxs-lookup"><span data-stu-id="f0ffb-148">Flow of operations in main()</span></span>
 
-<span data-ttu-id="68ac6-163">`main()` işlevi basittir, yalnızca işlem akışını belirtir ve hata denetimi gerçekleştirir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-163">The `main()` function is simple, only indicating the flow of operations and performing error-checking.</span></span>
+<span data-ttu-id="f0ffb-149">`main` işlevi basittir, yalnızca işlem akışını belirtir ve hata denetimi gerçekleştirir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-149">The `main` function is simple, only indicating the flow of operations and performing error-checking.</span></span>
 
 ```go
 func main() {
@@ -193,32 +145,36 @@ func main() {
     if err != nil {
         log.Fatalf("failed to create group: %v", err)
     }
-    log.Printf("created group: %v\n", *group.Name)
+    log.Printf("Created group: %v", *group.Name)
 
-    log.Println("starting deployment")
+    log.Printf("Starting deployment: %s", deploymentName)
     result, err := createDeployment()
     if err != nil {
-        log.Fatalf("Failed to deploy correctly: %v", err)
+        log.Fatalf("Failed to deploy: %v", err)
     }
-    log.Printf("Completed deployment: %v", *result.Name)
+    if result.Name != nil {
+        log.Printf("Completed deployment %v: %v", deploymentName, *result.Properties.ProvisioningState)
+    } else {
+        log.Printf("Completed deployment %v (no data returned to SDK)", deploymentName)
+    }
     getLogin()
 }
 ```
 
-<span data-ttu-id="68ac6-164">Kodun çalıştırılma adımları sırayla şöyledir:</span><span class="sxs-lookup"><span data-stu-id="68ac6-164">The steps that the code runs through are, in order:</span></span>
+<span data-ttu-id="f0ffb-150">Kodun çalıştırılma adımları sırayla şöyledir:</span><span class="sxs-lookup"><span data-stu-id="f0ffb-150">The steps that the code runs through are, in order:</span></span>
 
-* <span data-ttu-id="68ac6-165">(`createGroup()`) hedefine dağıtılacak kaynak grubunu oluşturma</span><span class="sxs-lookup"><span data-stu-id="68ac6-165">Create the resource group to deploy to (`createGroup()`)</span></span>
-* <span data-ttu-id="68ac6-166">Bu grup (`createDeployment()`) içinde dağıtımı oluşturma</span><span class="sxs-lookup"><span data-stu-id="68ac6-166">Create the deployment within this group (`createDeployment()`)</span></span>
-* <span data-ttu-id="68ac6-167">Dağıtılan VM (`getLogin()`) için oturum açma bilgilerini alma ve görüntüleme</span><span class="sxs-lookup"><span data-stu-id="68ac6-167">Obtain and display login information for the deployed VM (`getLogin()`)</span></span>
+* <span data-ttu-id="f0ffb-151">(`createGroup`) hedefine dağıtılacak kaynak grubunu oluşturma</span><span class="sxs-lookup"><span data-stu-id="f0ffb-151">Create the resource group to deploy to (`createGroup`)</span></span>
+* <span data-ttu-id="f0ffb-152">Bu grup (`createDeployment`) içinde dağıtımı oluşturma</span><span class="sxs-lookup"><span data-stu-id="f0ffb-152">Create the deployment within this group (`createDeployment`)</span></span>
+* <span data-ttu-id="f0ffb-153">Dağıtılan VM (`getLogin`) için oturum açma bilgilerini alma ve görüntüleme</span><span class="sxs-lookup"><span data-stu-id="f0ffb-153">Obtain and display login information for the deployed VM (`getLogin`)</span></span>
 
-### <a name="creating-the-resource-group"></a><span data-ttu-id="68ac6-168">Kaynak grubunu oluşturma</span><span class="sxs-lookup"><span data-stu-id="68ac6-168">Creating the resource group</span></span>
+### <a name="creating-the-resource-group"></a><span data-ttu-id="f0ffb-154">Kaynak grubunu oluşturma</span><span class="sxs-lookup"><span data-stu-id="f0ffb-154">Creating the resource group</span></span>
 
-<span data-ttu-id="68ac6-169">`createGroup()` işlevi, kaynak grubunu oluşturur.</span><span class="sxs-lookup"><span data-stu-id="68ac6-169">The `createGroup()` function creates the resource group.</span></span> <span data-ttu-id="68ac6-170">Çağrı akışına ve bağımsız değişkenlere bakılarak, SDK’da hizmet etkileşimlerinin yapılandırılma şekli görülebilir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-170">Looking at the call flow and arguments demonstrates the way that service interactions are structured in the SDK.</span></span>
+<span data-ttu-id="f0ffb-155">`createGroup` işlevi, kaynak grubunu oluşturur.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-155">The `createGroup` function creates the resource group.</span></span> <span data-ttu-id="f0ffb-156">Çağrı akışına ve bağımsız değişkenlere bakılarak, SDK’da hizmet etkileşimlerinin yapılandırılma şekli görülebilir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-156">Looking at the call flow and arguments demonstrates the way that service interactions are structured in the SDK.</span></span>
 
 ```go
 func createGroup() (group resources.Group, err error) {
-        groupsClient := resources.NewGroupsClient(config.SubscriptionID)
-        groupsClient.Authorizer = autorest.NewBearerAuthorizer(token)
+    groupsClient := resources.NewGroupsClient(clientData.SubscriptionID)
+    groupsClient.Authorizer = authorizer
 
         return groupsClient.CreateOrUpdate(
                 ctx,
@@ -228,20 +184,19 @@ func createGroup() (group resources.Group, err error) {
 }
 ```
 
-<span data-ttu-id="68ac6-171">Bir Azure hizmetiyle etkileşim kurmanın genel akışı şöyledir:</span><span class="sxs-lookup"><span data-stu-id="68ac6-171">The general flow of interacting with an Azure service is:</span></span>
+<span data-ttu-id="f0ffb-157">Bir Azure hizmetiyle etkileşim kurmanın genel akışı şöyledir:</span><span class="sxs-lookup"><span data-stu-id="f0ffb-157">The general flow of interacting with an Azure service is:</span></span>
 
-* <span data-ttu-id="68ac6-172">`service.NewXClient()` yöntemini kullanarak istemciyi oluşturun; burada `X`, etkileşim kurmak istediğiniz `service` öğesinin kaynak türüdür.</span><span class="sxs-lookup"><span data-stu-id="68ac6-172">Create the client using the `service.NewXClient()` method, where `X` is the resource type of the `service` that you want to interact with.</span></span> <span data-ttu-id="68ac6-173">Bu işlev her zaman bir abonelik kimliği alır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-173">This function always takes a subscription ID.</span></span>
-* <span data-ttu-id="68ac6-174">İstemci için yetkilendirme yöntemini ayarlayarak istemcinin uzak API ile etkileşim kurmasını sağlayın.</span><span class="sxs-lookup"><span data-stu-id="68ac6-174">Set the authorization method for the client, allowing it to interact with the remote API.</span></span>
-* <span data-ttu-id="68ac6-175">Yöntem çağrısını uzak API’ye karşılık gelen istemcide yapın.</span><span class="sxs-lookup"><span data-stu-id="68ac6-175">Make the method call on the client corresponding to the remote API.</span></span> <span data-ttu-id="68ac6-176">Hizmet istemcisi yöntemleri genellikle kaynağın adını ve bir meta veri nesnesini alır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-176">Service client methods usually take the name of the resource and a metadata object.</span></span>
+* <span data-ttu-id="f0ffb-158">`service.New*Client()` yöntemini kullanarak istemciyi oluşturun; burada `*`, etkileşim kurmak istediğiniz `service` öğesinin kaynak türüdür.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-158">Create the client using the `service.New*Client()` method, where `*` is the resource type of the `service` that you want to interact with.</span></span> <span data-ttu-id="f0ffb-159">Bu işlev her zaman bir abonelik kimliği alır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-159">This function always takes a subscription ID.</span></span>
+* <span data-ttu-id="f0ffb-160">İstemci için yetkilendirme yöntemini ayarlayarak istemcinin uzak API ile etkileşim kurmasını sağlayın.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-160">Set the authorization method for the client, allowing it to interact with the remote API.</span></span>
+* <span data-ttu-id="f0ffb-161">Yöntem çağrısını uzak API’ye karşılık gelen istemcide yapın.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-161">Make the method call on the client corresponding to the remote API.</span></span> <span data-ttu-id="f0ffb-162">Hizmet istemcisi yöntemleri genellikle kaynağın adını ve bir meta veri nesnesini alır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-162">Service client methods usually take the name of the resource and a metadata object.</span></span>
 
-<span data-ttu-id="68ac6-177">[`to.StringPtr()`](https://godoc.org/github.com/Azure/go-autorest/autorest/to#StringPtr) işlevi burada bir tür dönüştürmesi gerçekleştirmek için kullanılır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-177">The [`to.StringPtr()`](https://godoc.org/github.com/Azure/go-autorest/autorest/to#StringPtr) function is used to perform a type conversion here.</span></span> <span data-ttu-id="68ac6-178">SDK’nın yöntemleri için parametre yapıları hemen her zaman işaretçiler aldığından, bu yöntemler tür dönüştürmelerini kolaylaştırmak için sağlanır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-178">The parameters structs for methods of the SDK almost exclusively take pointers, so these methods are provided to make the type conversions easy.</span></span> <span data-ttu-id="68ac6-179">Kolaylık dönüştürücülerinin tam listesi ve davranışları için [autorest/to](https://godoc.org/github.com/Azure/go-autorest/autorest/to) modülüne ilişkin belgelere bakın.</span><span class="sxs-lookup"><span data-stu-id="68ac6-179">See the documentation for the [autorest/to](https://godoc.org/github.com/Azure/go-autorest/autorest/to) module for the complete list and behavior of convenience converters.</span></span>
+<span data-ttu-id="f0ffb-163">[`to.StringPtr`](https://godoc.org/github.com/Azure/go-autorest/autorest/to#StringPtr) işlevi burada bir tür dönüştürmesi gerçekleştirmek için kullanılır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-163">The [`to.StringPtr`](https://godoc.org/github.com/Azure/go-autorest/autorest/to#StringPtr) function is used to perform a type conversion here.</span></span> <span data-ttu-id="f0ffb-164">SDK’nın yöntemleri için parametre yapıları hemen her zaman işaretçiler aldığından, bu yöntemler tür dönüştürmelerini kolaylaştırmak için sağlanır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-164">The parameters for SDK methods almost exclusively take pointers, so convenience methods are provided to make the type conversions easy.</span></span> <span data-ttu-id="f0ffb-165">Kolaylık dönüştürücülerinin tam listesi ve davranışları için [autorest/to](https://godoc.org/github.com/Azure/go-autorest/autorest/to) modülüne ilişkin belgelere bakın.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-165">See the documentation for the [autorest/to](https://godoc.org/github.com/Azure/go-autorest/autorest/to) module for the complete list of convenience converters and their behavior.</span></span>
 
-<span data-ttu-id="68ac6-180">`groupsClient.CreateOrUpdate()` işlemi, kaynak grubunu temsil eden bir veri yapısına işaretçiyi döndürür.</span><span class="sxs-lookup"><span data-stu-id="68ac6-180">The `groupsClient.CreateOrUpdate()` operation returns a pointer to a data struct representing the resource group.</span></span> <span data-ttu-id="68ac6-181">Bu tür bir doğrudan dönüş değeri, zaman uyumlu olacak şekilde tasarlanmış kısa süreli bir işlemi belirtir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-181">A direct return value of this kind indicates a short-running operation that is meant to be synchronous.</span></span> <span data-ttu-id="68ac6-182">Sonraki bölümde, uzun süreli bir işlem örneğini ve bunlarla nasıl etkileşim kurulacağını göreceksiniz.</span><span class="sxs-lookup"><span data-stu-id="68ac6-182">In the next section, you'll see an example of a long-running operation and how to interact with them.</span></span>
+<span data-ttu-id="f0ffb-166">`groupsClient.CreateOrUpdate` yöntemi, kaynak grubunu temsil eden bir veri türüne işaretçiyi döndürür.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-166">The `groupsClient.CreateOrUpdate` method returns a pointer to a data type representing the resource group.</span></span> <span data-ttu-id="f0ffb-167">Bu tür bir doğrudan dönüş değeri, zaman uyumlu olacak şekilde tasarlanmış kısa süreli bir işlemi belirtir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-167">A direct return value of this kind indicates a short-running operation that is meant to be synchronous.</span></span> <span data-ttu-id="f0ffb-168">Sonraki bölümde, uzun süreli bir işlem örneğini ve bunlarla nasıl etkileşim kurulacağını göreceksiniz.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-168">In the next section, you'll see an example of a long-running operation and how to interact with it.</span></span>
 
-### <a name="performing-the-deployment"></a><span data-ttu-id="68ac6-183">Dağıtımı gerçekleştirme</span><span class="sxs-lookup"><span data-stu-id="68ac6-183">Performing the deployment</span></span>
+### <a name="performing-the-deployment"></a><span data-ttu-id="f0ffb-169">Dağıtımı gerçekleştirme</span><span class="sxs-lookup"><span data-stu-id="f0ffb-169">Performing the deployment</span></span>
 
-<span data-ttu-id="68ac6-184">Kaynaklarını içerecek grup oluşturulduktan sonra sıra dağıtımı çalıştırmaya gelir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-184">Once the group to contain its resources is created, it's time to run the deployment.</span></span> <span data-ttu-id="68ac6-185">Bu kod, mantığının farklı kısımlarını vurgulamak için daha küçük bölümlere ayrılmıştır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-185">This code is broken up into smaller sections to emphasize different parts of its logic.</span></span>
-
+<span data-ttu-id="f0ffb-170">Kaynak grubu oluşturulduktan sonra sıra dağıtımı çalıştırmaya gelir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-170">Once the resource group is created, it's time to run the deployment.</span></span> <span data-ttu-id="f0ffb-171">Bu kod, mantığının farklı kısımlarını vurgulamak için daha küçük bölümlere ayrılmıştır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-171">This code is broken up into smaller sections to emphasize different parts of its logic.</span></span>
 
 ```go
 func createDeployment() (deployment resources.DeploymentExtended, err error) {
@@ -253,87 +208,96 @@ func createDeployment() (deployment resources.DeploymentExtended, err error) {
     if err != nil {
         return
     }
-
+    (*params)["vm_password"] = map[string]string{
+        "value": clientData.VMPassword,
+    }
         // ...
 ```
 
-<span data-ttu-id="68ac6-186">Dağıtım dosyaları `readJSON` tarafından yüklenir; bunun ayrıntıları burada atlanmıştır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-186">The deployment files are loaded by `readJSON`, the details of which are skipped here.</span></span> <span data-ttu-id="68ac6-187">Bu işlev, kaynak dağıtım çağrısı için meta verilerin oluşturulmasında kullanılan `*map[string]interface{}` türünü döndürür.</span><span class="sxs-lookup"><span data-stu-id="68ac6-187">This function returns a `*map[string]interface{}`, the type used in constructing the metadata for the resource deployment call.</span></span>
+<span data-ttu-id="f0ffb-172">Dağıtım dosyaları `readJSON` tarafından yüklenir; bunun ayrıntıları burada atlanmıştır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-172">The deployment files are loaded by `readJSON`, the details of which are skipped here.</span></span> <span data-ttu-id="f0ffb-173">Bu işlev, kaynak dağıtım çağrısı için meta verilerin oluşturulmasında kullanılan `*map[string]interface{}` türünü döndürür.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-173">This function returns a `*map[string]interface{}`, the type used in constructing the metadata for the resource deployment call.</span></span> <span data-ttu-id="f0ffb-174">VM’nin parolası ayrıca dağıtım parametrelerinde el ile ayarlanmıştır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-174">The VM's password is also set manually on the deployment parameters.</span></span>
 
 ```go
         // ...
-        
-        deploymentsClient := resources.NewDeploymentsClient(config.SubscriptionID)
-        deploymentsClient.Authorizer = autorest.NewBearerAuthorizer(token)
 
-        deploymentFuture, err := deploymentsClient.CreateOrUpdate(
-                ctx,
-                resourceGroupName,
-                deploymentName,
-                resources.Deployment{
-                        Properties: &resources.DeploymentProperties{
-                                Template:   template,
-                                Parameters: params,
-                                Mode:       resources.Incremental,
-                        },
-                },
-        )
-        if err != nil {
-                log.Fatalf("Failed to create deployment: %v", err)
-        }
-        //...
+    deploymentsClient := resources.NewDeploymentsClient(clientData.SubscriptionID)
+    deploymentsClient.Authorizer = authorizer
+
+    deploymentFuture, err := deploymentsClient.CreateOrUpdate(
+        ctx,
+        resourceGroupName,
+        deploymentName,
+        resources.Deployment{
+            Properties: &resources.DeploymentProperties{
+                Template:   template,
+                Parameters: params,
+                Mode:       resources.Incremental,
+            },
+        },
+    )
+    if err != nil {
+        return
+    }
 ```
 
-<span data-ttu-id="68ac6-188">Bu kod, kaynak grubunun oluşturulmasıyla aynı deseni izler.</span><span class="sxs-lookup"><span data-stu-id="68ac6-188">This code follows the same pattern as with creating the resource group.</span></span> <span data-ttu-id="68ac6-189">Azure kimlik doğrulaması sayesinde yeni bir istemci oluşturulur ve sonra bir yöntem çağrılır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-189">A new client is created, given the ability to authenticate with Azure, and then a method is called.</span></span> <span data-ttu-id="68ac6-190">Yöntemin adı (`CreateOrUpdate`) bile kaynak grupları için karşılık gelen yöntemin adıyla aynıdır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-190">The method even has the same name (`CreateOrUpdate`) as the corresponding method for resource groups.</span></span> <span data-ttu-id="68ac6-191">Bu desen, SDK’da tekrar tekrar görünür.</span><span class="sxs-lookup"><span data-stu-id="68ac6-191">This pattern is seen again and again in the SDK.</span></span> <span data-ttu-id="68ac6-192">Benzer işi gerçekleştiren yöntemler normalde aynı ada sahiptir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-192">Methods that perform similar work normally have the same name.</span></span>
+<span data-ttu-id="f0ffb-175">Bu kod, kaynak grubunun oluşturulmasıyla aynı deseni izler.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-175">This code follows the same pattern as creating the resource group.</span></span> <span data-ttu-id="f0ffb-176">Azure kimlik doğrulaması sayesinde yeni bir istemci oluşturulur ve sonra bir yöntem çağrılır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-176">A new client is created, given the ability to authenticate with Azure, and then a method is called.</span></span> <span data-ttu-id="f0ffb-177">Yöntemin adı (`CreateOrUpdate`) bile kaynak grupları için karşılık gelen yöntemin adıyla aynıdır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-177">The method even has the same name (`CreateOrUpdate`) as the corresponding method for resource groups.</span></span> <span data-ttu-id="f0ffb-178">Bu desen SDK boyunca görülür.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-178">This pattern is seen throughout the SDK.</span></span> <span data-ttu-id="f0ffb-179">Benzer işi gerçekleştiren yöntemler normalde aynı ada sahiptir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-179">Methods that perform similar work normally have the same name.</span></span>
 
-<span data-ttu-id="68ac6-193">En büyük fark, `deploymentsClient.CreateOrUpdate()` yönteminin dönüş değerindedir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-193">The biggest difference comes in the return value of the `deploymentsClient.CreateOrUpdate()` method.</span></span> <span data-ttu-id="68ac6-194">Bu değer, [vadeli işlem tasarım desenini](https://en.wikipedia.org/wiki/Futures_and_promises) izleyen bir `Future` nesnesidir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-194">This value is a `Future` object, which follows the [future design pattern](https://en.wikipedia.org/wiki/Futures_and_promises).</span></span> <span data-ttu-id="68ac6-195">Vadeli işlemler, Azure’da başka iş yaparken ara sıra yoklamak isteyebileceğiniz uzun süreli bir işlemdir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-195">Futures represent a long-running operation in Azure that you may want to occasionally poll while performing other work.</span></span>
+<span data-ttu-id="f0ffb-180">En büyük fark, `deploymentsClient.CreateOrUpdate` yönteminin dönüş değerindedir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-180">The biggest difference comes in the return value of the `deploymentsClient.CreateOrUpdate` method.</span></span> <span data-ttu-id="f0ffb-181">Bu değer, [vadeli işlem tasarım desenini](https://en.wikipedia.org/wiki/Futures_and_promises) izleyen bir [Vadeli işlem](https://godoc.org/github.com/Azure/go-autorest/autorest/azure#Future) türüdür.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-181">This value is of the [Future](https://godoc.org/github.com/Azure/go-autorest/autorest/azure#Future) type, which follows the [future design pattern](https://en.wikipedia.org/wiki/Futures_and_promises).</span></span> <span data-ttu-id="f0ffb-182">Vadeli işlemler, tamamlanması üzerine yoklama yapabileceğiniz, iptal edeceğiniz veya engelleyebileceğiniz Azure’daki uzun süreli bir işlemi temsil eder.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-182">Futures represent a long-running operation in Azure that you can poll, cancel, or block on their completion.</span></span>
 
 ```go
         //...
-        err = deploymentFuture.Future.WaitForCompletion(ctx, deploymentsClient.BaseClient.Client)
-        if err != nil {
-                log.Fatalf("Error while waiting for deployment creation: %v", err)
-        }
-        return deploymentFuture.Result(deploymentsClient)
-}
+    err = deploymentFuture.Future.WaitForCompletion(ctx, deploymentsClient.BaseClient.Client)
+    if err != nil {
+        return
+    }
+    deployment, err = deploymentFuture.Result(deploymentsClient)
+
+    // Work around possible bugs or late-stage failures
+    if deployment.Name == nil || err != nil {
+        deployment, _ = deploymentsClient.Get(ctx, resourceGroupName, deploymentName)
+    }
+    return
 ```
 
-<span data-ttu-id="68ac6-196">Bu örnek için yapılacak en iyi şey, işlemin tamamlanmasını beklemektir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-196">For this example, the best thing to do is to wait for the operation to complete.</span></span> <span data-ttu-id="68ac6-197">Vadeli işlemin beklenmesi için hem bir [bağlam nesnesi](https://blog.golang.org/context) hem de Future nesnesini oluşturan istemci gerekir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-197">Waiting on a future requires both a [context object](https://blog.golang.org/context) and the client that created the Future object.</span></span> <span data-ttu-id="68ac6-198">Burada iki olası hata kaynağı vardır: Yöntem çağrılmaya çalışılırken istemci tarafında bir hataya yol açılmıştır ve sunucudan bir hata yanıtı alınmıştır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-198">There are two possible error sources here: An error caused on the client side when trying to invoke the method, and an error response from the server.</span></span> <span data-ttu-id="68ac6-199">İkinci durum, `deploymentFuture.Result()` çağrısının parçası olarak döndürülür.</span><span class="sxs-lookup"><span data-stu-id="68ac6-199">The latter is returned as part of the `deploymentFuture.Result()` call.</span></span>
+<span data-ttu-id="f0ffb-183">Bu örnek için yapılacak en iyi şey, işlemin tamamlanmasını beklemektir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-183">For this example, the best thing to do is to wait for the operation to complete.</span></span> <span data-ttu-id="f0ffb-184">Vadeli işlemin beklenmesi için hem bir [bağlam nesnesi](https://blog.golang.org/context) hem de `Future` nesnesini oluşturan istemci gerekir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-184">Waiting on a future requires both a [context object](https://blog.golang.org/context) and the client that created the `Future`.</span></span> <span data-ttu-id="f0ffb-185">Burada iki olası hata kaynağı vardır: Yöntem çağrılmaya çalışılırken istemci tarafında bir hataya yol açılmıştır ve sunucudan bir hata yanıtı alınmıştır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-185">There are two possible error sources here: An error caused on the client side when trying to invoke the method, and an error response from the server.</span></span> <span data-ttu-id="f0ffb-186">İkinci durum, `deploymentFuture.Result` çağrısının parçası olarak döndürülür.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-186">The latter is returned as part of the `deploymentFuture.Result` call.</span></span>
 
-### <a name="obtaining-the-assigned-ip-address"></a><span data-ttu-id="68ac6-200">Atanan IP adresini alma</span><span class="sxs-lookup"><span data-stu-id="68ac6-200">Obtaining the assigned IP address</span></span>
+<span data-ttu-id="f0ffb-187">Dağıtım bilgileri alındıktan sonra, verilerin doldurulduğundan emin olmak için `deploymentsClient.Get` işlevine yönelik el ile bir çağrıyla dağıtım bilgilerinin boş olduğu olası hatalar için geçici bir çözüm bulunur.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-187">Once the deployment information is retrieved, there is a workaround for possible bugs where the deployment information may be empty with a manual call to `deploymentsClient.Get` to ensure that the data is populated.</span></span>
 
-<span data-ttu-id="68ac6-201">Yeni oluşturulan VM ile herhangi bir şey yapmak için atanan IP adresi gerekir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-201">To do anything with the newly created VM, you need the assigned IP address.</span></span> <span data-ttu-id="68ac6-202">IP adresleri, Ağ Arabirim Denetleyicisi (NIC) kaynaklarına bağlı olan kendi ayrı Azure kaynaklarıdır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-202">IP addresses are their own separate Azure resource, bound to Network Interface Controller (NIC) resources.</span></span>
+### <a name="obtaining-the-assigned-ip-address"></a><span data-ttu-id="f0ffb-188">Atanan IP adresini alma</span><span class="sxs-lookup"><span data-stu-id="f0ffb-188">Obtaining the assigned IP address</span></span>
+
+<span data-ttu-id="f0ffb-189">Yeni oluşturulan VM ile herhangi bir şey yapmak için atanan IP adresi gerekir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-189">To do anything with the newly created VM, you need the assigned IP address.</span></span> <span data-ttu-id="f0ffb-190">IP adresleri, Ağ Arabirim Denetleyicisi (NIC) kaynaklarına bağlı olan kendi ayrı Azure kaynaklarıdır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-190">IP addresses are their own separate Azure resource, bound to Network Interface Controller (NIC) resources.</span></span>
 
 ```go
 func getLogin() {
-        params, err := readJSON(parametersFile)
-        if err != nil {
-                log.Fatalf("Unable to read parameters. Get login information with `az network public-ip list -g %s", resourceGroupName)
-        }
+    params, err := readJSON(parametersFile)
+    if err != nil {
+        log.Fatalf("Unable to read parameters. Get login information with `az network public-ip list -g %s", resourceGroupName)
+    }
 
-        addressClient := network.NewPublicIPAddressesClient(config.SubscriptionID)
-        addressClient.Authorizer = autorest.NewBearerAuthorizer(token)
-        ipName := (*params)["publicIPAddresses_QuickstartVM_ip_name"].(map[string]interface{})
-        ipAddress, err := addressClient.Get(ctx, resourceGroupName, ipName["value"].(string), "")
-        if err != nil {
-                log.Fatalf("Unable to get IP information. Try using `az network public-ip list -g %s", resourceGroupName)
-        }
+    addressClient := network.NewPublicIPAddressesClient(clientData.SubscriptionID)
+    addressClient.Authorizer = authorizer
+    ipName := (*params)["publicIPAddresses_QuickstartVM_ip_name"].(map[string]interface{})
+    ipAddress, err := addressClient.Get(ctx, resourceGroupName, ipName["value"].(string), "")
+    if err != nil {
+        log.Fatalf("Unable to get IP information. Try using `az network public-ip list -g %s", resourceGroupName)
+    }
 
-        vmUser := (*params)["vm_user"].(map[string]interface{})
-        vmPass := (*params)["vm_password"].(map[string]interface{})
+    vmUser := (*params)["vm_user"].(map[string]interface{})
 
-        log.Printf("Log in with ssh: %s@%s, password: %s",
-                vmUser["value"].(string),
-                *ipAddress.PublicIPAddressPropertiesFormat.IPAddress,
-                vmPass["value"].(string))
+    log.Printf("Log in with ssh: %s@%s, password: %s",
+        vmUser["value"].(string),
+        *ipAddress.PublicIPAddressPropertiesFormat.IPAddress,
+        clientData.VMPassword)
 }
 ```
 
-<span data-ttu-id="68ac6-203">Bu yöntem, parametreler dosyasında depolanan bilgileri kullanır.</span><span class="sxs-lookup"><span data-stu-id="68ac6-203">This method relies on information that is stored in the parameters file.</span></span> <span data-ttu-id="68ac6-204">Bu kod, NIC’sini almak için doğrudan VM’yi sorgulayabilir, IP kaynağını almak için NIC’yi sorgulayabilir ve sonra doğrudan IP kaynağını sorgulayabilir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-204">The code could query the VM directly to get its NIC, query the NIC to get its IP resource, and then query the IP resource directly.</span></span> <span data-ttu-id="68ac6-205">Çözümlenecek uzun bir bağımlılıklar ve işlemler zincirinin olması, bunu pahalı kılar.</span><span class="sxs-lookup"><span data-stu-id="68ac6-205">That's a long chain of dependencies and operations to resolve, making it expensive.</span></span> <span data-ttu-id="68ac6-206">JSON bilgileri yerel olduğundan, bunun yerine yüklenebilir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-206">Since the JSON information is local, it can be loaded instead.</span></span>
+<span data-ttu-id="f0ffb-191">Bu yöntem, parametreler dosyasında depolanan bilgileri kullanır.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-191">This method relies on information that is stored in the parameters file.</span></span> <span data-ttu-id="f0ffb-192">Bu kod, NIC’sini almak için doğrudan VM’yi sorgulayabilir, IP kaynağını almak için NIC’yi sorgulayabilir ve sonra doğrudan IP kaynağını sorgulayabilir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-192">The code could query the VM directly to get its NIC, query the NIC to get its IP resource, and then query the IP resource directly.</span></span> <span data-ttu-id="f0ffb-193">Çözümlenecek uzun bir bağımlılıklar ve işlemler zincirinin olması, bunu pahalı kılar.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-193">That's a long chain of dependencies and operations to resolve, making it expensive.</span></span> <span data-ttu-id="f0ffb-194">JSON bilgileri yerel olduğundan, bunun yerine yüklenebilir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-194">Since the JSON information is local, it can be loaded instead.</span></span>
 
-<span data-ttu-id="68ac6-207">VM kullanıcı adı ve parola değerleri de benzer şekilde JSON’dan yüklenir.</span><span class="sxs-lookup"><span data-stu-id="68ac6-207">The values for the VM user and password are likewise loaded from the JSON.</span></span>
+<span data-ttu-id="f0ffb-195">VM kullanıcısının değeri de ayrıca JSON’dan yüklenir.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-195">The value for the VM user is also loaded from the JSON.</span></span> <span data-ttu-id="f0ffb-196">VM parolası, kimlik doğrulama dosyasından önceden yüklendi.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-196">The VM password was loaded earlier from the authentication file.</span></span>
 
-## <a name="next-steps"></a><span data-ttu-id="68ac6-208">Sonraki adımlar</span><span class="sxs-lookup"><span data-stu-id="68ac6-208">Next steps</span></span>
+## <a name="next-steps"></a><span data-ttu-id="f0ffb-197">Sonraki adımlar</span><span class="sxs-lookup"><span data-stu-id="f0ffb-197">Next steps</span></span>
 
-<span data-ttu-id="68ac6-209">Bu hızlı başlangıçta, mevcut bir şablonu alıp Go aracılığıyla dağıttınız.</span><span class="sxs-lookup"><span data-stu-id="68ac6-209">In this quickstart, you took an existing template and deployed it through Go.</span></span> <span data-ttu-id="68ac6-210">Sonra, çalıştığından emin olmak için yeni oluşturulan sanal makineye SSH aracılığıyla bağlandınız.</span><span class="sxs-lookup"><span data-stu-id="68ac6-210">Then you connected to the newly created VM via SSH to ensure that it's running.</span></span>
+<span data-ttu-id="f0ffb-198">Bu hızlı başlangıçta, mevcut bir şablonu alıp Go aracılığıyla dağıttınız.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-198">In this quickstart, you took an existing template and deployed it through Go.</span></span> <span data-ttu-id="f0ffb-199">Sonra, çalıştığından emin olmak için yeni oluşturulan sanal makineye SSH aracılığıyla bağlandınız.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-199">Then you connected to the newly created VM via SSH to ensure that it's running.</span></span>
 
-<span data-ttu-id="68ac6-211">Go ile Azure ortamında sanal makinelerle çalışma hakkında bilgi edinmeye devam etmek için [Go için Azure bilgi işlem örnekleri](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/compute) veya [Go için Azure kaynak yönetimi örnekleri](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/resources) bölümüne bakın.</span><span class="sxs-lookup"><span data-stu-id="68ac6-211">To continue learning about working with virtual machines in the Azure environment with Go, take a look at the [Azure compute samples for Go](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/compute) or [Azure resource management samples for Go](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/resources).</span></span>
+<span data-ttu-id="f0ffb-200">Go ile Azure ortamında sanal makinelerle çalışma hakkında bilgi edinmeye devam etmek için [Go için Azure bilgi işlem örnekleri](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/compute) veya [Go için Azure kaynak yönetimi örnekleri](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/resources) bölümüne bakın.</span><span class="sxs-lookup"><span data-stu-id="f0ffb-200">To continue learning about working with virtual machines in the Azure environment with Go, take a look at the [Azure compute samples for Go](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/compute) or [Azure resource management samples for Go](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/resources).</span></span>
+
+<span data-ttu-id="f0ffb-201">SDK’daki kullanılabilir kimlik doğrulama yöntemleri ve destekledikleri kimlik doğrulama türleri hakkında daha fazla bilgi edinmek için bkz. [Go için Azure SDK ile kimlik doğrulama](azure-sdk-go-authorization.md).</span><span class="sxs-lookup"><span data-stu-id="f0ffb-201">To learn more about the available authentication methods in the SDK, and which authentication types they support, see [Authentication with the Azure SDK for Go](azure-sdk-go-authorization.md).</span></span>
