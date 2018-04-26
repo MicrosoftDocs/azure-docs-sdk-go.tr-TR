@@ -3,17 +3,17 @@ title: Go için Azure SDK’yı yükleme
 description: Go için Azure SDK’yı yükleme, satıcı dizinine taşıma ve yapılandırma.
 author: sptramer
 ms.author: sttramer
-ms.date: 01/30/2018
+ms.date: 03/14/2018
 ms.topic: article
 ms.devlang: go
 manager: carmonm
-ms.openlocfilehash: 580daf4f2e91eabf97e3acd21bda183c559b57da
-ms.sourcegitcommit: fcc1786d59d2e32c97a9a8e0748e06f564a961bd
+ms.openlocfilehash: a6a92e080aea1a92f47a9d7083f133ca05a47541
+ms.sourcegitcommit: 26520a8c6e812facb5b9432d68c370fa23c99888
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 03/23/2018
+ms.lasthandoff: 04/16/2018
 ---
-# <a name="installing-the-azure-sdk-for-go"></a>Go için Azure SDK’yı yükleme
+# <a name="install-the-azure-sdk-for-go"></a>Go için Azure SDK’yı yükleme
 
 Go için Azure SDK’ya hoş geldiniz! Bu SDK, Go uygulamalarınızdan Azure hizmetlerini yönetmenize ve bu hizmetlerle etkileşim kurmanıza olanak sağlar.
 
@@ -27,7 +27,7 @@ Azure Depolama Blobları ile çalışmak için ayrı bir SDK gerekir.
 go get -u -d github.com/Azure/azure-storage-blob-go/...
 ```
 
-## <a name="vendoring-the-azure-sdk-for-go"></a>Go için Azure SDK’yı satıcı dizinine taşıma
+## <a name="vendor-the-azure-sdk-for-go"></a>Go için Azure SDK’yı satıcı dizinine taşıma
 
 Go için Azure SDK, [dep](https://github.com/golang/dep) üzerinden satıcı dizinine taşınabilir. Kararlılık nedeniyle satıcı dizinine taşınması önerilir. `dep` desteğini kullanmak amacıyla `Gopkg.toml` için `[[constraint]]` bölümüne `github.com/Azure/azure-sdk-for-go` ekleyin. Örneğin, `14.0.0` sürümünde satıcı dizinine taşımak için şu girişi ekleyin:
 
@@ -37,7 +37,7 @@ name = "github.com/Azure/azure-sdk-for-go"
 version = "14.0.0"
 ```
 
-## <a name="including-the-azure-sdk-for-go-in-your-project"></a>Projenize Go için Azure SDK’yı dahil etme
+## <a name="include-the-azure-sdk-for-go-in-your-project"></a>Projenize Go için Azure SDK’yı dahil etme
 
 Go kodunuzdan Azure hizmetlerini kullanmak için, etkileşim kurduğunuz hizmetleri ve gerekli `autorest` modüllerini içeri aktarın.
 [AutoRest paketleri](https://godoc.org/github.com/Azure/go-autorest) ve [kullanılabilir hizmetler](https://godoc.org/github.com/Azure/azure-sdk-for-go) için GoDoc’tan kullanılabilir modüllerin tam listesini alın. `go-autorest` içinde ihtiyaç duyduğunuz en yaygın paketler:

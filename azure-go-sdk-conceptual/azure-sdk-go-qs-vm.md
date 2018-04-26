@@ -3,15 +3,15 @@ title: Go’dan bir Azure sanal makinesini dağıtma
 description: Go için Azure SDK’yı kullanarak bir sanal makineyi dağıtın.
 author: sptramer
 ms.author: sttramer
-ms.date: 02/08/2018
+ms.date: 04/03/2018
 ms.topic: quickstart
 ms.devlang: go
 manager: carmonm
-ms.openlocfilehash: 46a1243ff2ff6bfcf3831e2cea3137c1f6051c78
-ms.sourcegitcommit: fcc1786d59d2e32c97a9a8e0748e06f564a961bd
+ms.openlocfilehash: 565580e9e6c6ced543bd00bbaa01383834d9a41c
+ms.sourcegitcommit: 2b2884ea7673c95ba45b3d6eec647200e75bfc5b
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 03/23/2018
+ms.lasthandoff: 04/19/2018
 ---
 # <a name="quickstart-deploy-an-azure-virtual-machine-from-a-template-with-the-azure-sdk-for-go"></a>Hızlı başlangıç: Go için Azure SDK ile bir şablondan Azure sanal makinesi dağıtma
 
@@ -23,7 +23,7 @@ Bu hızlı başlangıcın sonunda, bir kullanıcı adı ve parola ile oturum aç
 
 [!INCLUDE [cloud-shell-try-it.md](includes/cloud-shell-try-it.md)]
 
-Azure CLI’nın yerel bir yüklemesini kullanıyorsanız bu hızlı başlangıç, 2.0.24 veya sonraki sürümleri gerektirir. CLI yüklemenizin bu gereksinimi karşıladığından emin olmak için `az --version` çalıştırın. Yükleme veya yükseltme yapmanız gerekirse [Azure CLI 2.0’ı yükleyin](/cli/azure/install-azure-cli).
+Azure CLI’nın yerel bir yüklemesini kullanıyorsanız bu hızlı başlangıç, __2.0.28__ veya sonraki CLI sürümlerini gerektirir. CLI yüklemenizin bu gereksinimi karşıladığından emin olmak için `az --version` çalıştırın. Yükleme veya yükseltme yapmanız gerekirse [Azure CLI 2.0’ı yükleyin](/cli/azure/install-azure-cli).
 
 ## <a name="install-the-azure-sdk-for-go"></a>Go için Azure SDK’yı yükleme 
 
@@ -31,69 +31,35 @@ Azure CLI’nın yerel bir yüklemesini kullanıyorsanız bu hızlı başlangı�
 
 ## <a name="create-a-service-principal"></a>Hizmet sorumlusu oluşturma
 
+
 Bir uygulamada etkileşimli olmadan oturum açmak için hizmet sorumlusu gerekir. Hizmet sorumluları, benzersiz bir kullanıcı kimliği oluşturan rol tabanlı erişim denetiminin (RBAC) parçasıdır. CLI ile yeni bir hizmet sorumlusu oluşturmak için aşağıdaki komutu çalıştırın:
 
 ```azurecli-interactive
-az ad sp create-for-rbac --name az-go-vm-quickstart
+az ad sp create-for-rbac --name az-go-vm-quickstart --sdk-auth > quickstart.auth
 ```
 
-Çıkıştaki `appId`, `password` ve `tenant` değerlerini kaydettiğinizden __emin olun__. Bu değerler uygulama tarafından Azure kimlik doğrulaması yapmak için kullanılır.
-
-Azure CLI 2.0 ile hizmet sorumluları oluşturma ve bunları yönetme hakkında daha fazla bilgi için bkz. [Azure CLI 2.0 ile Azure hizmet sorumlusu oluşturma](/cli/azure/create-an-azure-service-principal-azure-cli).
+`AZURE_AUTH_LOCATION` ortam değişkenini bu dosyaya giden tam yol olacak şekilde ayarlayın. Daha sonra hizmet sorumlusundan herhangi bir değişiklik yapmanıza veya bilgi kaydetmenize gerek kalmadan SDK kimlik bilgilerini bulur ve doğrudan bu dosyadan okur.
 
 ## <a name="get-the-code"></a>Kodu alma
 
 `go get` ile hızlı başlangıç kodunu ve tüm bağımlılıklarını edinin.
 
 ```bash
-go get -u -d github.com/azure-samples/azure-sdk-for-go-samples/quickstart/deploy-vm/...
+go get -u -d github.com/azure-samples/azure-sdk-for-go-samples/quickstarts/deploy-vm/...
 ```
 
-Bu kod derlenir, ancak siz Azure hesabınızla ve oluşturulan hizmet sorumlusuyla ilgili bilgileri sağlayıncaya kadar düzgün çalışmaz. `main.go` içinde, bir `authInfo` yapısı içeren `config` değişkeni vardır. Bu yapının düzgün şekilde kimlik doğrulaması yapması için alan değerlerinin değiştirilmesi gerekir.
-
-```go
-    config = authInfo{ // Your application credentials
-        TenantID:               "", // Azure account tenantID
-        SubscriptionID:         "", // Azure subscription subscriptionID
-        ServicePrincipalID:     "", // Service principal appId
-        ServicePrincipalSecret: "", // Service principal password/secret
-    }
-```
-
-* `SubscriptionID`: CLI komutundan alınabilen abonelik kimliğiniz
-
-  ```azurecli-interactive
-  az account show --query id -o tsv
-  ```
-
-* `TenantID`: Hizmet sorumlusu oluşturulurken kaydedilen `tenant` değeri olan kiracı kimliğiniz
-* `ServicePrincipalID`: Hizmet sorumlusu oluşturulurken kaydedilen `appId` değeri
-* `ServicePrincipalSecret`: Hizmet sorumlusu oluşturulurken kaydedilen `password` değeri
-
-`vm-quickstart-params.json` dosyasındaki bir değeri de düzenlemeniz gerekir.
-
-```json
-    "vm_password": {
-        "value": "_"
-    }
-```
-
-* `vm_password`: VM kullanıcı hesabı için parola. 12-72 karakter uzunluğunda olmalı ve şu karakterlerden üçünü içermelidir:
-  * Bir küçük harf
-  * Bir büyük harf
-  * Bir rakam
-  * Bir sembol
+`AZURE_AUTH_LOCATION` değişkeni düzgün şekilde ayarlanmışsa kaynak kodunda herhangi bir değişiklik yapmanız gerekmez. Program çalıştığında, gerekli olan tüm kimlik doğrulama bilgilerini buradan yükler.
 
 ## <a name="running-the-code"></a>Kodu çalıştırma
 
 `go run` komutu ile hızlı başlangıcı çalıştırın.
 
 ```bash
-cd $GOPATH/src/github.com/azure-samples/azure-sdk-for-go-samples/quickstart/deploy-vm
+cd $GOPATH/src/github.com/azure-samples/azure-sdk-for-go-samples/quickstarts/deploy-vm
 go run main.go
 ```
 
-Dağıtımda bir hata varsa bir sorun olduğunu belirten ancak özel ayrıntıları içermeyen bir ileti alırsınız. Azure CLI’yı kullanarak aşağıdaki komut ile dağıtım hatasının ayrıntılarını alın:
+Dağıtımda bir hata varsa bir sorun olduğunu belirten ancak yeterli ayrıntıları içermemiş olabilen bir ileti alırsınız. Azure CLI’yı kullanarak aşağıdaki komut ile dağıtım hatasının tam ayrıntılarını alın:
 
 ```azurecli-interactive
 az group deployment show -g GoVMQuickstart -n VMDeployQuickstart
@@ -113,20 +79,9 @@ az group delete -n GoVMQuickstart
 
 Hızlı başlangıç kodunun yaptığı işlem bir değişken öbeğine ve birçok küçük işleve ayrılmış ve her biri burada incelenmiştir.
 
-### <a name="variable-assignments-and-structs"></a>Değişken atamaları ve yapıları
+### <a name="variables-constants-and-types"></a>Değişkenler, sabitler ve türler
 
-Hızlı başlangıç kendi içinde bulunduğundan, komut satırı seçenekleri veya ortam değişkenleri yerine genel değişkenleri kullanır.
-
-```go
-type authInfo struct {
-        TenantID               string
-        SubscriptionID         string
-        ServicePrincipalID     string
-        ServicePrincipalSecret string
-}
-```
-
-Azure hizmetlerinde kimlik doğrulaması yapmak için gerekli tüm bilgileri kapsüllemek için `authInfo` yapısı bildirilir.
+Hızlı başlangıç kendi içinde olduğundan, genel sabitleri ve değişkenleri kullanır.
 
 ```go
 const (
@@ -138,54 +93,51 @@ const (
     parametersFile = "vm-quickstart-params.json"
 )
 
+// Information loaded from the authorization file to identify the client
+type clientInfo struct {
+    SubscriptionID string
+    VMPassword     string
+}
+
 var (
-    config = authInfo{ // Your application credentials
-        TenantID:               "", // Azure account tenantID
-        SubscriptionID:         "", // Azure subscription subscriptionID
-        ServicePrincipalID:     "", // Service principal appId
-        ServicePrincipalSecret: "", // Service principal password/secret
-    }
-
-    ctx = context.Background()
-
-    token *adal.ServicePrincipalToken
+    ctx        = context.Background()
+    clientData clientInfo
+    authorizer autorest.Authorizer
 )
 ```
 
 Oluşturulan kaynakların adlarını veren değerler bildirilir. Burada konum da belirtilir; dağıtımların diğer veri merkezlerinde nasıl davrandığını görmek için konumu değiştirebilirsiniz. Her veri merkezinde tüm gerekli kaynaklar mevcut değildir.
 
-`templateFile` ve `parametersFile` sabitleri, dağıtım için gerekli dosyaları işaret eder. Hizmet sorumlusu belirteci daha sonra ele alınacaktır. `ctx` değişkeni, ağ işlemleri için [Go bağlamıdır](https://blog.golang.org/context).
+`clientInfo` türü, SDK’da istemcileri ve VM parolasını ayarlamak üzere kimlik doğrulama dosyasından bağımsız olarak yüklenmesi gereken bilgileri kapsayacak şekilde bildirilmiştir.
 
-### <a name="init-and-authorization"></a>init() ve yetkilendirme
+`templateFile` ve `parametersFile` sabitleri, dağıtım için gerekli dosyaları işaret eder. `authorizer` değişkeni kimlik doğrulaması için Go SDK’sı tarafından yapılandırılır ve `ctx` değişkeni ise ağ işlemleri için bir [Go bağlamıdır](https://blog.golang.org/context).
 
-Kod için `init()` yöntemi, yetkilendirmeyi ayarlar. Yetkilendirme, hızlı başlangıçtaki her şey için önkoşul olduğundan, başlatmanın parçası olması mantıklıdır. 
+### <a name="authentication-and-initialization"></a>Kimlik doğrulama ve başlatma
+
+`init` işlevi kimlik doğrulamayı ayarlar. Yetkilendirme, hızlı başlangıçtaki her şey için önkoşul olduğundan, başlatmanın parçası olması mantıklıdır. Ayrıca istemcileri ve VM’yi yapılandırmak için kimlik doğrulama dosyasından gerekli olan bazı bilgileri yükler.
 
 ```go
-// Authenticate with the Azure services over OAuth, using a service principal.
 func init() {
-    oauthConfig, err := adal.NewOAuthConfig(azure.PublicCloud.ActiveDirectoryEndpoint, config.TenantID)
+    var err error
+    authorizer, err = auth.NewAuthorizerFromFile(azure.PublicCloud.ResourceManagerEndpoint)
     if err != nil {
-        log.Fatalf("Failed to get OAuth config: %v\n", err)
+        log.Fatalf("Failed to get OAuth config: %v", err)
     }
-    token, err = adal.NewServicePrincipalToken(
-        *oauthConfig,
-        config.ServicePrincipalID,
-        config.ServicePrincipalSecret,
-        azure.PublicCloud.ResourceManagerEndpoint)
-    if err != nil {
-        log.Fatalf("faled to get token: %v\n", err)
-    }
+
+    authInfo, err := readJSON(os.Getenv("AZURE_AUTH_LOCATION"))
+    clientData.SubscriptionID = (*authInfo)["subscriptionId"].(string)
+    clientData.VMPassword = (*authInfo)["clientSecret"].(string)
 }
 ```
 
-Bu kod, yetkilendirme için iki adımı tamamlar:
+İlk olarak, `AZURE_AUTH_LOCATION` konumunda bulunan dosyadan kimlik doğrulama bilgilerini yüklemek için [auth.NewAuthorizerFromFile](https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth#NewAuthorizerFromFile) çağrılır. Ardından dosya `readJSON` işlevi tarafından el ile yüklenerek (burada göz ardı edilir), programın geri kalanını çalıştırmak için gereken iki değerin çekilmesi sağlanır: İstemcinin abonelik kimliği ve VM’nin parolası için de kullanılan hizmet sorumlusunun gizli dizisi.
 
-* `TenantID` için OAuth yapılandırma bilgileri, Azure Active Directory ile arabirim oluşturularak alınır. [`azure.PublicCloud`](https://godoc.org/github.com/Azure/go-autorest/autorest/azure#PublicCloud) nesnesi, standart Azure yapılandırmasında kullanılan uç noktaları içerir.
-* [`adal.NewServicePrincipalToken()`](https://godoc.org/github.com/Azure/go-autorest/autorest/adal#NewServicePrincipalToken) işlevi çağrılır. Bu işlev, hangi Azure yönetimi stilinin kullanılmakta olduğu bilgisinin yanı sıra, hizmet sorumlusu oturum açma adı ile birlikte OAuth bilgilerini alır. Belirli gereksinimlere sahip değilseniz ve ne yaptığınızı bilmiyorsanız bu değer her zaman `.ResourceManagerEndpoint` olmalıdır.
+> [!WARNING]
+> Hızlı başlangıcı basit tutmak için hizmet sorumlusu parolası yeniden kullanılır. Üretimdeyken Azure kaynaklarınıza erişim sağlayan bir parolayı __asla__ yeniden kullanmamaya dikkat edin.
 
 ### <a name="flow-of-operations-in-main"></a>main() içindeki işlem akışı
 
-`main()` işlevi basittir, yalnızca işlem akışını belirtir ve hata denetimi gerçekleştirir.
+`main` işlevi basittir, yalnızca işlem akışını belirtir ve hata denetimi gerçekleştirir.
 
 ```go
 func main() {
@@ -193,32 +145,36 @@ func main() {
     if err != nil {
         log.Fatalf("failed to create group: %v", err)
     }
-    log.Printf("created group: %v\n", *group.Name)
+    log.Printf("Created group: %v", *group.Name)
 
-    log.Println("starting deployment")
+    log.Printf("Starting deployment: %s", deploymentName)
     result, err := createDeployment()
     if err != nil {
-        log.Fatalf("Failed to deploy correctly: %v", err)
+        log.Fatalf("Failed to deploy: %v", err)
     }
-    log.Printf("Completed deployment: %v", *result.Name)
+    if result.Name != nil {
+        log.Printf("Completed deployment %v: %v", deploymentName, *result.Properties.ProvisioningState)
+    } else {
+        log.Printf("Completed deployment %v (no data returned to SDK)", deploymentName)
+    }
     getLogin()
 }
 ```
 
 Kodun çalıştırılma adımları sırayla şöyledir:
 
-* (`createGroup()`) hedefine dağıtılacak kaynak grubunu oluşturma
-* Bu grup (`createDeployment()`) içinde dağıtımı oluşturma
-* Dağıtılan VM (`getLogin()`) için oturum açma bilgilerini alma ve görüntüleme
+* (`createGroup`) hedefine dağıtılacak kaynak grubunu oluşturma
+* Bu grup (`createDeployment`) içinde dağıtımı oluşturma
+* Dağıtılan VM (`getLogin`) için oturum açma bilgilerini alma ve görüntüleme
 
 ### <a name="creating-the-resource-group"></a>Kaynak grubunu oluşturma
 
-`createGroup()` işlevi, kaynak grubunu oluşturur. Çağrı akışına ve bağımsız değişkenlere bakılarak, SDK’da hizmet etkileşimlerinin yapılandırılma şekli görülebilir.
+`createGroup` işlevi, kaynak grubunu oluşturur. Çağrı akışına ve bağımsız değişkenlere bakılarak, SDK’da hizmet etkileşimlerinin yapılandırılma şekli görülebilir.
 
 ```go
 func createGroup() (group resources.Group, err error) {
-        groupsClient := resources.NewGroupsClient(config.SubscriptionID)
-        groupsClient.Authorizer = autorest.NewBearerAuthorizer(token)
+    groupsClient := resources.NewGroupsClient(clientData.SubscriptionID)
+    groupsClient.Authorizer = authorizer
 
         return groupsClient.CreateOrUpdate(
                 ctx,
@@ -230,18 +186,17 @@ func createGroup() (group resources.Group, err error) {
 
 Bir Azure hizmetiyle etkileşim kurmanın genel akışı şöyledir:
 
-* `service.NewXClient()` yöntemini kullanarak istemciyi oluşturun; burada `X`, etkileşim kurmak istediğiniz `service` öğesinin kaynak türüdür. Bu işlev her zaman bir abonelik kimliği alır.
+* `service.New*Client()` yöntemini kullanarak istemciyi oluşturun; burada `*`, etkileşim kurmak istediğiniz `service` öğesinin kaynak türüdür. Bu işlev her zaman bir abonelik kimliği alır.
 * İstemci için yetkilendirme yöntemini ayarlayarak istemcinin uzak API ile etkileşim kurmasını sağlayın.
 * Yöntem çağrısını uzak API’ye karşılık gelen istemcide yapın. Hizmet istemcisi yöntemleri genellikle kaynağın adını ve bir meta veri nesnesini alır.
 
-[`to.StringPtr()`](https://godoc.org/github.com/Azure/go-autorest/autorest/to#StringPtr) işlevi burada bir tür dönüştürmesi gerçekleştirmek için kullanılır. SDK’nın yöntemleri için parametre yapıları hemen her zaman işaretçiler aldığından, bu yöntemler tür dönüştürmelerini kolaylaştırmak için sağlanır. Kolaylık dönüştürücülerinin tam listesi ve davranışları için [autorest/to](https://godoc.org/github.com/Azure/go-autorest/autorest/to) modülüne ilişkin belgelere bakın.
+[`to.StringPtr`](https://godoc.org/github.com/Azure/go-autorest/autorest/to#StringPtr) işlevi burada bir tür dönüştürmesi gerçekleştirmek için kullanılır. SDK’nın yöntemleri için parametre yapıları hemen her zaman işaretçiler aldığından, bu yöntemler tür dönüştürmelerini kolaylaştırmak için sağlanır. Kolaylık dönüştürücülerinin tam listesi ve davranışları için [autorest/to](https://godoc.org/github.com/Azure/go-autorest/autorest/to) modülüne ilişkin belgelere bakın.
 
-`groupsClient.CreateOrUpdate()` işlemi, kaynak grubunu temsil eden bir veri yapısına işaretçiyi döndürür. Bu tür bir doğrudan dönüş değeri, zaman uyumlu olacak şekilde tasarlanmış kısa süreli bir işlemi belirtir. Sonraki bölümde, uzun süreli bir işlem örneğini ve bunlarla nasıl etkileşim kurulacağını göreceksiniz.
+`groupsClient.CreateOrUpdate` yöntemi, kaynak grubunu temsil eden bir veri türüne işaretçiyi döndürür. Bu tür bir doğrudan dönüş değeri, zaman uyumlu olacak şekilde tasarlanmış kısa süreli bir işlemi belirtir. Sonraki bölümde, uzun süreli bir işlem örneğini ve bunlarla nasıl etkileşim kurulacağını göreceksiniz.
 
 ### <a name="performing-the-deployment"></a>Dağıtımı gerçekleştirme
 
-Kaynaklarını içerecek grup oluşturulduktan sonra sıra dağıtımı çalıştırmaya gelir. Bu kod, mantığının farklı kısımlarını vurgulamak için daha küçük bölümlere ayrılmıştır.
-
+Kaynak grubu oluşturulduktan sonra sıra dağıtımı çalıştırmaya gelir. Bu kod, mantığının farklı kısımlarını vurgulamak için daha küçük bölümlere ayrılmıştır.
 
 ```go
 func createDeployment() (deployment resources.DeploymentExtended, err error) {
@@ -253,51 +208,59 @@ func createDeployment() (deployment resources.DeploymentExtended, err error) {
     if err != nil {
         return
     }
-
+    (*params)["vm_password"] = map[string]string{
+        "value": clientData.VMPassword,
+    }
         // ...
 ```
 
-Dağıtım dosyaları `readJSON` tarafından yüklenir; bunun ayrıntıları burada atlanmıştır. Bu işlev, kaynak dağıtım çağrısı için meta verilerin oluşturulmasında kullanılan `*map[string]interface{}` türünü döndürür.
+Dağıtım dosyaları `readJSON` tarafından yüklenir; bunun ayrıntıları burada atlanmıştır. Bu işlev, kaynak dağıtım çağrısı için meta verilerin oluşturulmasında kullanılan `*map[string]interface{}` türünü döndürür. VM’nin parolası ayrıca dağıtım parametrelerinde el ile ayarlanmıştır.
 
 ```go
         // ...
-        
-        deploymentsClient := resources.NewDeploymentsClient(config.SubscriptionID)
-        deploymentsClient.Authorizer = autorest.NewBearerAuthorizer(token)
 
-        deploymentFuture, err := deploymentsClient.CreateOrUpdate(
-                ctx,
-                resourceGroupName,
-                deploymentName,
-                resources.Deployment{
-                        Properties: &resources.DeploymentProperties{
-                                Template:   template,
-                                Parameters: params,
-                                Mode:       resources.Incremental,
-                        },
-                },
-        )
-        if err != nil {
-                log.Fatalf("Failed to create deployment: %v", err)
-        }
-        //...
+    deploymentsClient := resources.NewDeploymentsClient(clientData.SubscriptionID)
+    deploymentsClient.Authorizer = authorizer
+
+    deploymentFuture, err := deploymentsClient.CreateOrUpdate(
+        ctx,
+        resourceGroupName,
+        deploymentName,
+        resources.Deployment{
+            Properties: &resources.DeploymentProperties{
+                Template:   template,
+                Parameters: params,
+                Mode:       resources.Incremental,
+            },
+        },
+    )
+    if err != nil {
+        return
+    }
 ```
 
-Bu kod, kaynak grubunun oluşturulmasıyla aynı deseni izler. Azure kimlik doğrulaması sayesinde yeni bir istemci oluşturulur ve sonra bir yöntem çağrılır. Yöntemin adı (`CreateOrUpdate`) bile kaynak grupları için karşılık gelen yöntemin adıyla aynıdır. Bu desen, SDK’da tekrar tekrar görünür. Benzer işi gerçekleştiren yöntemler normalde aynı ada sahiptir.
+Bu kod, kaynak grubunun oluşturulmasıyla aynı deseni izler. Azure kimlik doğrulaması sayesinde yeni bir istemci oluşturulur ve sonra bir yöntem çağrılır. Yöntemin adı (`CreateOrUpdate`) bile kaynak grupları için karşılık gelen yöntemin adıyla aynıdır. Bu desen SDK boyunca görülür. Benzer işi gerçekleştiren yöntemler normalde aynı ada sahiptir.
 
-En büyük fark, `deploymentsClient.CreateOrUpdate()` yönteminin dönüş değerindedir. Bu değer, [vadeli işlem tasarım desenini](https://en.wikipedia.org/wiki/Futures_and_promises) izleyen bir `Future` nesnesidir. Vadeli işlemler, Azure’da başka iş yaparken ara sıra yoklamak isteyebileceğiniz uzun süreli bir işlemdir.
+En büyük fark, `deploymentsClient.CreateOrUpdate` yönteminin dönüş değerindedir. Bu değer, [vadeli işlem tasarım desenini](https://en.wikipedia.org/wiki/Futures_and_promises) izleyen bir [Vadeli işlem](https://godoc.org/github.com/Azure/go-autorest/autorest/azure#Future) türüdür. Vadeli işlemler, tamamlanması üzerine yoklama yapabileceğiniz, iptal edeceğiniz veya engelleyebileceğiniz Azure’daki uzun süreli bir işlemi temsil eder.
 
 ```go
         //...
-        err = deploymentFuture.Future.WaitForCompletion(ctx, deploymentsClient.BaseClient.Client)
-        if err != nil {
-                log.Fatalf("Error while waiting for deployment creation: %v", err)
-        }
-        return deploymentFuture.Result(deploymentsClient)
-}
+    err = deploymentFuture.Future.WaitForCompletion(ctx, deploymentsClient.BaseClient.Client)
+    if err != nil {
+        return
+    }
+    deployment, err = deploymentFuture.Result(deploymentsClient)
+
+    // Work around possible bugs or late-stage failures
+    if deployment.Name == nil || err != nil {
+        deployment, _ = deploymentsClient.Get(ctx, resourceGroupName, deploymentName)
+    }
+    return
 ```
 
-Bu örnek için yapılacak en iyi şey, işlemin tamamlanmasını beklemektir. Vadeli işlemin beklenmesi için hem bir [bağlam nesnesi](https://blog.golang.org/context) hem de Future nesnesini oluşturan istemci gerekir. Burada iki olası hata kaynağı vardır: Yöntem çağrılmaya çalışılırken istemci tarafında bir hataya yol açılmıştır ve sunucudan bir hata yanıtı alınmıştır. İkinci durum, `deploymentFuture.Result()` çağrısının parçası olarak döndürülür.
+Bu örnek için yapılacak en iyi şey, işlemin tamamlanmasını beklemektir. Vadeli işlemin beklenmesi için hem bir [bağlam nesnesi](https://blog.golang.org/context) hem de `Future` nesnesini oluşturan istemci gerekir. Burada iki olası hata kaynağı vardır: Yöntem çağrılmaya çalışılırken istemci tarafında bir hataya yol açılmıştır ve sunucudan bir hata yanıtı alınmıştır. İkinci durum, `deploymentFuture.Result` çağrısının parçası olarak döndürülür.
+
+Dağıtım bilgileri alındıktan sonra, verilerin doldurulduğundan emin olmak için `deploymentsClient.Get` işlevine yönelik el ile bir çağrıyla dağıtım bilgilerinin boş olduğu olası hatalar için geçici bir çözüm bulunur.
 
 ### <a name="obtaining-the-assigned-ip-address"></a>Atanan IP adresini alma
 
@@ -305,35 +268,36 @@ Yeni oluşturulan VM ile herhangi bir şey yapmak için atanan IP adresi gerekir
 
 ```go
 func getLogin() {
-        params, err := readJSON(parametersFile)
-        if err != nil {
-                log.Fatalf("Unable to read parameters. Get login information with `az network public-ip list -g %s", resourceGroupName)
-        }
+    params, err := readJSON(parametersFile)
+    if err != nil {
+        log.Fatalf("Unable to read parameters. Get login information with `az network public-ip list -g %s", resourceGroupName)
+    }
 
-        addressClient := network.NewPublicIPAddressesClient(config.SubscriptionID)
-        addressClient.Authorizer = autorest.NewBearerAuthorizer(token)
-        ipName := (*params)["publicIPAddresses_QuickstartVM_ip_name"].(map[string]interface{})
-        ipAddress, err := addressClient.Get(ctx, resourceGroupName, ipName["value"].(string), "")
-        if err != nil {
-                log.Fatalf("Unable to get IP information. Try using `az network public-ip list -g %s", resourceGroupName)
-        }
+    addressClient := network.NewPublicIPAddressesClient(clientData.SubscriptionID)
+    addressClient.Authorizer = authorizer
+    ipName := (*params)["publicIPAddresses_QuickstartVM_ip_name"].(map[string]interface{})
+    ipAddress, err := addressClient.Get(ctx, resourceGroupName, ipName["value"].(string), "")
+    if err != nil {
+        log.Fatalf("Unable to get IP information. Try using `az network public-ip list -g %s", resourceGroupName)
+    }
 
-        vmUser := (*params)["vm_user"].(map[string]interface{})
-        vmPass := (*params)["vm_password"].(map[string]interface{})
+    vmUser := (*params)["vm_user"].(map[string]interface{})
 
-        log.Printf("Log in with ssh: %s@%s, password: %s",
-                vmUser["value"].(string),
-                *ipAddress.PublicIPAddressPropertiesFormat.IPAddress,
-                vmPass["value"].(string))
+    log.Printf("Log in with ssh: %s@%s, password: %s",
+        vmUser["value"].(string),
+        *ipAddress.PublicIPAddressPropertiesFormat.IPAddress,
+        clientData.VMPassword)
 }
 ```
 
 Bu yöntem, parametreler dosyasında depolanan bilgileri kullanır. Bu kod, NIC’sini almak için doğrudan VM’yi sorgulayabilir, IP kaynağını almak için NIC’yi sorgulayabilir ve sonra doğrudan IP kaynağını sorgulayabilir. Çözümlenecek uzun bir bağımlılıklar ve işlemler zincirinin olması, bunu pahalı kılar. JSON bilgileri yerel olduğundan, bunun yerine yüklenebilir.
 
-VM kullanıcı adı ve parola değerleri de benzer şekilde JSON’dan yüklenir.
+VM kullanıcısının değeri de ayrıca JSON’dan yüklenir. VM parolası, kimlik doğrulama dosyasından önceden yüklendi.
 
 ## <a name="next-steps"></a>Sonraki adımlar
 
 Bu hızlı başlangıçta, mevcut bir şablonu alıp Go aracılığıyla dağıttınız. Sonra, çalıştığından emin olmak için yeni oluşturulan sanal makineye SSH aracılığıyla bağlandınız.
 
 Go ile Azure ortamında sanal makinelerle çalışma hakkında bilgi edinmeye devam etmek için [Go için Azure bilgi işlem örnekleri](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/compute) veya [Go için Azure kaynak yönetimi örnekleri](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/resources) bölümüne bakın.
+
+SDK’daki kullanılabilir kimlik doğrulama yöntemleri ve destekledikleri kimlik doğrulama türleri hakkında daha fazla bilgi edinmek için bkz. [Go için Azure SDK ile kimlik doğrulama](azure-sdk-go-authorization.md).
