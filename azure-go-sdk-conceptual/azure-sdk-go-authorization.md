@@ -4,16 +4,19 @@ description: Go için Azure SDK’da bulabileceğiniz kimlik doğrulama yönteml
 services: azure
 author: sptramer
 ms.author: sttramer
-ms.date: 04/03/2018
-ms.topic: article
-ms.service: azure
-ms.devlang: go
 manager: carmonm
-ms.openlocfilehash: 39f9dc5a7cdf9ab84cfd9264446bacb31392ca80
-ms.sourcegitcommit: 59d2b4c9d8da15fbbd15e36551093219fdaf256e
+ms.date: 04/03/2018
+ms.topic: conceptual
+ms.prod: azure
+ms.technology: azure-sdk-go
+ms.devlang: go
+ms.service: active-directory
+ms.component: authentication
+ms.openlocfilehash: 370f5607b89c0044022f7987d06c3a55c9d6f352
+ms.sourcegitcommit: f08abf902b48f8173aa6e261084ff2cfc9043305
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 04/18/2018
+ms.lasthandoff: 05/03/2018
 ---
 # <a name="authentication-methods-in-the-azure-sdk-for-go"></a>Go için Azure SDK’da kimlik doğrulama yöntemleri
 
@@ -84,6 +87,27 @@ Ortam tabanlı kimlik doğrulaması kullanırken, yetkilendirici nesnenizi almak
 import "github.com/Azure/go-autorest/autorest/azure/auth"
 authorizer, err := auth.NewAuthorizerFromEnvironment()
 ```
+
+### <a name="authentication-on-azure-stack"></a>Azure Stack’te Kimlik Doğrulaması
+
+Azure Stack’te kimlik doğrulaması yapmak için aşağıdaki değişkenleri ayarlamanız gerekir:
+
+| Ortam değişkeni | Açıklama  |
+|----------------------|--------------|
+| `AZURE_AD_ENDPOINT` | Active Directory uç noktası. |
+| `AZURE_AD_RESOURCE` | Active Directory kaynak kimliği. |
+
+Bu değişkenler Azure Stack meta data verilerinden alınabilir. Meta verileri almak için Azure Stack ortamınızda bir web tarayıcısı açıp şu URL’yi kullanın: `(ResourceManagerURL)/metadata/endpoints?api-version=1.0`
+
+`ResourceManagerURL` Azure Stack dağıtımınızın bölge adı, makine adı ve dış tam etki alanı adına (FQDN) göre değişiklik gösterebilir:
+
+| Ortam | ResourceManagerURL |
+|----------------------|--------------|
+| Geliştirme Seti | `https://management.local.azurestack.external/` |
+| Tümleşik Sistemler | `https://management.(region).ext-(machine-name).(FQDN)` |
+
+Azure Stack üzerinde Go için Azure SDK’sını kullanma hakkında daha fazla bilgi için [Azure Stack’te GO ile API sürümü profillerini kullanma](https://docs.microsoft.com/en-us/azure/azure-stack/user/azure-stack-version-profiles-go) sayfasına başvurun
+
 
 ## <a name="use-file-based-authentication"></a>Dosya tabanlı kimlik doğrulama kullanma
 
