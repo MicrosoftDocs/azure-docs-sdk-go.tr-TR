@@ -9,11 +9,12 @@ ms.topic: conceptual
 ms.prod: azure
 ms.technology: azure-sdk-go
 ms.devlang: go
-ms.openlocfilehash: ad77bdff881770512a828b19dc7af4821f4a55ad
-ms.sourcegitcommit: f08abf902b48f8173aa6e261084ff2cfc9043305
+ms.openlocfilehash: 8423b3fedd89e57662bf96f777a5b30926914da9
+ms.sourcegitcommit: b81b17cbb934399c195bfdcb87137aee935f5234
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 05/03/2018
+ms.lasthandoff: 06/04/2018
+ms.locfileid: "34755524"
 ---
 # <a name="install-the-azure-sdk-for-go"></a>Go için Azure SDK’yı yükleme
 
@@ -23,11 +24,14 @@ Go için Azure SDK’ya hoş geldiniz! Bu SDK, Go uygulamalarınızdan Azure hiz
 
 [!INCLUDE [azure-sdk-go-get](includes/azure-sdk-go-get.md)]
 
-Azure Depolama Blobları ile çalışmak için ayrı bir SDK gerekir.
+Bazı Azure hizmetlerinin kendi Go SDK’sı bulunur ve bu hizmetler Go için Azure SDK’sı çekirdek paketinde yer almaz. Aşağıdaki tabloda kendi SDK’larına ve paket adlarına sahip hizmetler listelenir. Bu paketlerinin tamamının önizlemede olduğu kabul edilir.
 
-```bash
-go get -u -d github.com/Azure/azure-storage-blob-go/...
-```
+| Hizmet | Paket |
+|---------|---------|
+| Blob Depolama | [github.com/Azure/azure-storage-blob-go](https://github.com/Azure/azure-storage-blob-go) |
+| Dosya Depolama | [github.com/Azure/azure-storage-file-go](https://github.com/Azure/azure-storage-file-go) |
+| Olay Hub'ı | [github.com/Azure/azure-event-hubs-go](https://github.com/Azure/azure-event-hubs-go) |
+| Application Insights | [github.com/Microsoft/ApplicationInsights-go](https://github.com/Microsoft/ApplicationInsights-go) |
 
 ## <a name="vendor-the-azure-sdk-for-go"></a>Go için Azure SDK’yı satıcı dizinine taşıma
 
