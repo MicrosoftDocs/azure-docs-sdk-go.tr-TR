@@ -15,6 +15,7 @@ ms.sourcegitcommit: f08abf902b48f8173aa6e261084ff2cfc9043305
 ms.translationtype: HT
 ms.contentlocale: tr-TR
 ms.lasthandoff: 05/03/2018
+ms.locfileid: "32319807"
 ---
 # <a name="azure-sdk-for-go-samples-for-azure-sql-database"></a><span data-ttu-id="03237-103">Azure SQL Veritabanı’na yönelik Go için Azure SDK örnekleri</span><span class="sxs-lookup"><span data-stu-id="03237-103">Azure SDK for Go samples for Azure SQL Database</span></span>
 

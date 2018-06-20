@@ -1,9 +1,9 @@
 ### YamlMime:YamlDocument
 documentType: LandingData
-title: "Go için Azure geliştiricileri"
+title: Go için Azure geliştiricileri
 metadata:
-  title: "Go için Azure geliştiricileri - Öğreticiler, API Başvurusu"
-  description: "Aşağıdaki geliştirici kaynaklarını kullanarak Go için Azure SDK ile geliştirmeye başlayın."
+  title: Go için Azure geliştiricileri - Öğreticiler, API Başvurusu
+  description: Aşağıdaki geliştirici kaynaklarını kullanarak Go için Azure SDK ile geliştirmeye başlayın.
   keywords: Azure, Go, golang, SDK, API
   author: sptramer
   ms.author: sttramer
@@ -21,64 +21,66 @@ metadata:
   ms.translationtype: HT
   ms.contentlocale: tr-TR
   ms.lasthandoff: 03/01/2018
+  ms.locfileid: "29716019"
 sections:
 - items:
   - type: markdown
-    text: "Resmi öğreticilerimizi ve araçlarımızı kullanarak [Go için Azure SDK](https://github.com/Azure/azure-sdk-for-go) ile uygulamalar geliştirmeye başlayın.\n"
+    text: >
+      Resmi öğreticilerimizi ve araçlarımızı kullanarak [Go için Azure SDK](https://github.com/Azure/azure-sdk-for-go) ile uygulamalar geliştirmeye başlayın.
 - items:
   - type: list
     style: cards
     className: cardsM
     columns: 2
     items:
-    - title: "Başlarken"
-      html: "<p>Go için Azure SDK’yı yükleme</p>"
+    - title: Başlarken
+      html: <p>Go için Azure SDK’yı yükleme</p>
       href: https://docs.microsoft.com/go/azure/azure-sdk-go-install
       image:
         src: https://docs.microsoft.com/media/common/i_get-started.svg
-    - title: "Kod Örnekleri"
-      html: "<p>Go kullanan Azure kod örnekleri</p>"
+    - title: Kod Örnekleri
+      html: <p>Go kullanan Azure kod örnekleri</p>
       image:
         src: https://docs.microsoft.com//media/common/i_code-samples.svg
       href: https://github.com/azure-samples/azure-sdk-for-go-samples
-    - title: "SDK &amp; Araçları"
-      html: "<p>Geliştirici araçları</p>"
+    - title: SDK &amp; Araçları
+      html: <p>Geliştirici araçları</p>
       href: https://docs.microsoft.com/go/azure/azure-sdk-go-tools
       image:
         src: https://docs.microsoft.com/media/common/i_download-install.svg
-    - title: "API Başvurusu"
-      html: "<p>Go için Azure SDK için GoDoc</p>"
+    - title: API Başvurusu
+      html: <p>Go için Azure SDK için GoDoc</p>
       href: https://godoc.org/github.com/Azure/azure-sdk-for-go
       image:
         src: https://docs.microsoft.com/media/common/i_api-reference.svg
-- title: "Go SDK Hızlı başlangıçları"
+- title: Go SDK Hızlı başlangıçları
   items:
   - type: paragraph
-    text: "Go için Azure SDK’nın nasıl kullanılacağını öğrenin."
+    text: Go için Azure SDK’nın nasıl kullanılacağını öğrenin.
   - type: list
     style: cards
     className: cardsM
     columns: 2
     items:
-    - title: "Go ile bir Azure kaynak şablonundan sanal makineyi dağıtma"
+    - title: Go ile bir Azure kaynak şablonundan sanal makineyi dağıtma
       href: https://docs.microsoft.com/go/azure/azure-sdk-go-qs-vm
       image:
         src: https://docs.microsoft.com/azure/virtual-machines/media/index/virtualmachine.svg
-    - title: "Go için Azure Depolama SDK ile nesneleri Azure Blob Depolama’ya aktarma"
+    - title: Go için Azure Depolama SDK ile nesneleri Azure Blob Depolama’ya aktarma
       href: https://docs.microsoft.com/azure/storage/blobs/storage-quickstart-blobs-go?toc=%2fgo%2fazure%2ftoc.json
       image:
         src: https://docs.microsoft.com/azure/media/index/logo_azure-blob-storage.svg
-    - title: "Go ile PostgreSQL için Azure Veritabanı’na bağlanma"
+    - title: Go ile PostgreSQL için Azure Veritabanı’na bağlanma
       href: https://docs.microsoft.com/azure/postgresql/connect-go?toc=%2fgo%2fazure%2ftoc.json
       image:
         src: https://docs.microsoft.com//azure/media/index/PostgreSQL.svg
-  - title: "Örnekler"
+  - title: Örnekler
     items:
     - type: list
       style: unordered
       items:
-      - html: "<a href=\"https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/iam\">Azure hizmetlerinde kimlik doğrulaması</a>"
-      - html: "<a href=\"https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/compute\">Yeni Sanal Makineler oluşturma</a>"
-      - html: "<a href=\"https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/containerinstance\">Azure Container Instances‘a kapsayıcı dağıtma</a>"
-      - html: "<a href=\"https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/containerservice\">Azure Kubernetes Hizmeti’nde küme oluşturma</a>"
-      - html: "<a href=\"https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/storage\">Azure Depolama hizmetleri ile çalışma</a>"
+      - html: <a href="https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/iam">Azure hizmetlerinde kimlik doğrulaması</a>
+      - html: <a href="https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/compute">Yeni Sanal Makineler oluşturma</a>
+      - html: <a href="https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/containerinstance">Azure Container Instances‘a kapsayıcı dağıtma</a>
+      - html: <a href="https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/containerservice">Azure Kubernetes Hizmeti’nde küme oluşturma</a>
+      - html: <a href="https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/storage">Azure Depolama hizmetleri ile çalışma</a>
