@@ -15,6 +15,7 @@ ms.sourcegitcommit: f08abf902b48f8173aa6e261084ff2cfc9043305
 ms.translationtype: HT
 ms.contentlocale: tr-TR
 ms.lasthandoff: 05/03/2018
+ms.locfileid: "32319858"
 ---
 # <a name="azure-sdk-for-go-samples-for-authentication-and-aad"></a>Kimlik doğrulaması ve AAD’ye yönelik Go için Azure SDK örnekleri
 
