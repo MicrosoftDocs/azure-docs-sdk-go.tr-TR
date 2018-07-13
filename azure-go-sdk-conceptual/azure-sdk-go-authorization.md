@@ -12,12 +12,12 @@ ms.technology: azure-sdk-go
 ms.devlang: go
 ms.service: active-directory
 ms.component: authentication
-ms.openlocfilehash: 370f5607b89c0044022f7987d06c3a55c9d6f352
-ms.sourcegitcommit: f08abf902b48f8173aa6e261084ff2cfc9043305
+ms.openlocfilehash: c7970167070bdf1f3fc75692f3e34268801c65df
+ms.sourcegitcommit: 181d4e0b164cf39b3feac346f559596bd19c94db
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 05/03/2018
-ms.locfileid: "32319892"
+ms.lasthandoff: 07/11/2018
+ms.locfileid: "38067008"
 ---
 # <a name="authentication-methods-in-the-azure-sdk-for-go"></a>Go için Azure SDK’da kimlik doğrulama yöntemleri
 
@@ -107,7 +107,7 @@ Bu değişkenler Azure Stack meta data verilerinden alınabilir. Meta verileri a
 | Geliştirme Seti | `https://management.local.azurestack.external/` |
 | Tümleşik Sistemler | `https://management.(region).ext-(machine-name).(FQDN)` |
 
-Azure Stack üzerinde Go için Azure SDK’sını kullanma hakkında daha fazla bilgi için [Azure Stack’te GO ile API sürümü profillerini kullanma](https://docs.microsoft.com/en-us/azure/azure-stack/user/azure-stack-version-profiles-go) sayfasına başvurun
+Azure Stack üzerinde Go için Azure SDK’sını kullanma hakkında daha fazla bilgi için [Azure Stack’te GO ile API sürümü profillerini kullanma](https://docs.microsoft.com/azure/azure-stack/user/azure-stack-version-profiles-go) sayfasına başvurun
 
 
 ## <a name="use-file-based-authentication"></a>Dosya tabanlı kimlik doğrulama kullanma
@@ -131,7 +131,7 @@ Hizmet sorumlularını kullanma ve erişim izinlerini yönetmeyle ilgili daha fa
 
 ## <a name="use-device-token-authentication"></a>Cihaz belirteci kimlik doğrulaması kullanma
 
-Kullanıcıların etkileşimli olarak oturum açmasını istiyorsanız, bu olanağı sunmanın en iyi yolu cihaz belirteci kimlik doğrulamasından geçer. Bu kimlik doğrulama akışı, bir Microsoft oturum açma sitesine yapıştırmak üzere kullanıcıya bir belirteç geçirir. Kullanıcı daha sonra bu sitede bir Azure Active Directory (AAD) hesabıyla oturum açar. Bu kimlik doğrulama yöntemi, standart kullanıcı adı/parola kimlik doğrulamasının aksine, çok faktörlü kimlik doğrulamasının etkinleştirildiği hesapları destekler.
+Kullanıcıların etkileşimli olarak oturum açmasını istiyorsanız, bu olanağı sunmanın en iyi yolu cihaz belirteci kimlik doğrulamasından geçer. Bu kimlik doğrulama akışı, bir Microsoft oturum açma sitesine yapıştırmak üzere kullanıcıya bir belirteç geçirir. Kullanıcı daha sonra bu sitede bir Azure Active Directory (AAD) hesabıyla kimlik doğrulaması yapar. Bu kimlik doğrulama yöntemi, standart kullanıcı adı/parola kimlik doğrulamasının aksine, çok faktörlü kimlik doğrulamasının etkinleştirildiği hesapları destekler.
 
 Cihaz belirteci kimlik doğrulamasını kullanmak için, [NewDeviceFlowConfig](https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth#NewDeviceFlowConfig) işleviyle bir [DeviceFlowConfig](https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth#DeviceFlowConfig) yetkilendiricisi oluşturun. Kimlik doğrulama işlemini başlatmak için sonuç nesnesinin üzerinde [Authorizer](https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth#DeviceFlowConfig.Authorizer) işlevini çağırın. Cihaz akışı kimlik doğrulaması, tüm kimlik doğrulama akışı tamamlanana kadar program yürütmesini engeller.
 

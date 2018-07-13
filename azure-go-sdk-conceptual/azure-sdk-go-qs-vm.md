@@ -10,16 +10,16 @@ ms.prod: azure
 ms.technology: azure-sdk-go
 ms.service: virtual-machines
 ms.devlang: go
-ms.openlocfilehash: 1fbcc54df2a2aebce56c5a5800361f3d3aed1ccc
-ms.sourcegitcommit: f08abf902b48f8173aa6e261084ff2cfc9043305
+ms.openlocfilehash: 7592e8617436a76dd27cac5269971051982425bf
+ms.sourcegitcommit: 181d4e0b164cf39b3feac346f559596bd19c94db
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 05/03/2018
-ms.locfileid: "32319943"
+ms.lasthandoff: 07/11/2018
+ms.locfileid: "38067025"
 ---
 # <a name="quickstart-deploy-an-azure-virtual-machine-from-a-template-with-the-azure-sdk-for-go"></a>Hızlı başlangıç: Go için Azure SDK ile bir şablondan Azure sanal makinesi dağıtma
 
-Bu hızlı başlangıç, Go için Azure SDK ile bir şablondan kaynakları dağıtmaya odaklanır. Şablonlar, [Azure kaynak grubu](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-overview) içinde bulunan tüm kaynakların anlık görüntüleridir. İlerledikçe, kullanışlı bir görevi gerçekleştirirken SDK’nın işlevlerini ve kurallarını öğreneceksiniz.
+Bu hızlı başlangıç, Go için Azure SDK ile bir şablondan kaynakları dağıtmaya odaklanır. Şablonlar, [Azure kaynak grubu](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-overview) içinde bulunan tüm kaynakların anlık görüntüleridir. İlerledikçe, kullanışlı bir görevi gerçekleştirirken SDK’nın işlevlerini ve kurallarını öğreneceksiniz.
 
 Bu hızlı başlangıcın sonunda, bir kullanıcı adı ve parola ile oturum açtığınız çalışan bir sanal makineniz olacaktır.
 
@@ -35,8 +35,7 @@ Azure CLI’nın yerel bir yüklemesini kullanıyorsanız bu hızlı başlangı�
 
 ## <a name="create-a-service-principal"></a>Hizmet sorumlusu oluşturma
 
-
-Bir uygulamada etkileşimli olmadan oturum açmak için hizmet sorumlusu gerekir. Hizmet sorumluları, benzersiz bir kullanıcı kimliği oluşturan rol tabanlı erişim denetiminin (RBAC) parçasıdır. CLI ile yeni bir hizmet sorumlusu oluşturmak için aşağıdaki komutu çalıştırın:
+Bir uygulama ile Azure’da etkileşimli olmadan oturum açmak için hizmet sorumlusu gerekir. Hizmet sorumluları, benzersiz bir kullanıcı kimliği oluşturan rol tabanlı erişim denetiminin (RBAC) parçasıdır. CLI ile yeni bir hizmet sorumlusu oluşturmak için aşağıdaki komutu çalıştırın:
 
 ```azurecli-interactive
 az ad sp create-for-rbac --name az-go-vm-quickstart --sdk-auth > quickstart.auth
