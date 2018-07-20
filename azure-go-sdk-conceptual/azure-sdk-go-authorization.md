@@ -12,12 +12,12 @@ ms.technology: azure-sdk-go
 ms.devlang: go
 ms.service: active-directory
 ms.component: authentication
-ms.openlocfilehash: c7970167070bdf1f3fc75692f3e34268801c65df
-ms.sourcegitcommit: 181d4e0b164cf39b3feac346f559596bd19c94db
+ms.openlocfilehash: f5e76fc745512a3a52172f560c3a24f510e96feb
+ms.sourcegitcommit: d1790b317a8fcb4d672c654dac2a925a976589d4
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 07/11/2018
-ms.locfileid: "38067008"
+ms.lasthandoff: 07/14/2018
+ms.locfileid: "39039548"
 ---
 # <a name="authentication-methods-in-the-azure-sdk-for-go"></a>Go için Azure SDK’da kimlik doğrulama yöntemleri
 
@@ -30,19 +30,19 @@ Go için Azure SDK, farklı kimlik bilgileri kümeleri kullanarak birkaç farkl�
 | Kimlik doğrulaması türü | Şunlar olduğunda önerilir... |
 |---------------------|---------------------|
 | Sertifika tabanlı kimlik doğrulaması | Azure Active Directory (AAD) kullanıcısı veya hizmet sorumlusu için yapılandırılmış bir X509 sertifikasına sahipsiniz. Daha fazla bilgi için bkz. [Azure Active Directory’de sertifika tabanlı kimlik doğrulamayı kullanmaya başlama]. |
-| İstemci kimlik bilgileri | Bu uygulamaya veya ait olduğu uygulama sınıfına ayarlı yapılandırılmış bir hizmet sorumlusuna sahipsiniz. Daha fazla bilgi için bkz. [Azure CLI 2.0 ile hizmet sorumlusu oluşturma]. |
+| İstemci kimlik bilgileri | Bu uygulamaya veya ait olduğu uygulama sınıfına ayarlı yapılandırılmış bir hizmet sorumlusuna sahipsiniz. Daha fazla bilgi için bkz. [Azure CLI ile hizmet sorumlusu oluşturma]. |
 | Yönetilen Hizmet Kimliği (MSI) | Uygulamanız, Yönetilen Hizmet Kimliği (MSI) ile yapılandırılmış bir Azure kaynak üzerinde çalışıyor. Daha fazla bilgi için bkz. [Azure kaynakları için Yönetilen Hizmet Kimliği (MSI)]. |
 | Cihaz belirteci | Uygulamanızın __yalnızca__ etkileşimli olarak kullanılması amaçlanmıştır ve potansiyel olarak birden çok AAD kiracısından olan çeşitli kullanıcılara sahip olacaktır. Kullanıcıların oturum açmak için bir web tarayıcısına erişimi olur. Daha fazla bilgi için bkz. [Cihaz belirteci kimlik doğrulaması kullanma](#use-device-token-authentication).|
 | Kullanıcı adı/parola | Başka herhangi bir kimlik doğrulama yöntemi kullanamayan etkileşimli bir uygulamaya sahipsiniz. Kullanıcılarınızın çok faktörlü kimlik doğrulaması özelliği AAD oturum açma işlemleri için etkinleştirilmemiş. |
 
 > [!IMPORTANT]
 > İstemci kimlik bilgileri dışında bir kimlik doğrulama türü kullanıyorsanız, uygulamanız Azure Active Directory'de kayıtlı olmalıdır. Bunu nasıl yapacağınızı öğrenmek için bkz. [Uygulamaları Azure Active Directory ile tümleştirme](/azure/active-directory/develop/active-directory-integrating-applications).
-
+>
 > [!NOTE]
 > Özel gereksinimleriniz yoksa, kullanıcı adı/parola kimlik doğrulamasından kaçının. Kullanıcı tabanlı oturum açmanın uygun olduğu durumlarda, genellikle bunun yerine cihaz belirteci kimlik doğrulaması kullanılabilir.
 
 [Azure Active Directory’de sertifika tabanlı kimlik doğrulamayı kullanmaya başlama]: /azure/active-directory/active-directory-certificate-based-authentication-get-started
-[Azure CLI 2.0 ile hizmet sorumlusu oluşturma]: /cli/azure/create-an-azure-service-principal-azure-cli
+[Azure CLI ile hizmet sorumlusu oluşturma]: /cli/azure/create-an-azure-service-principal-azure-cli
 [Azure kaynakları için Yönetilen Hizmet Kimliği (MSI)]: /azure/active-directory/managed-service-identity/overview
 
 Bu kimlik doğrulama türleri farklı yöntemler üzerinden kullanılabilir. [_Ortam tabanlı kimlik doğrulama_](#use-environment-based-authentication) kimlik bilgilerini doğrudan programın ortamından okur. [_Dosya tabanlı kimlik doğrulama_](#use-file-based-authentication) hizmet sorumlusu kimlik bilgilerini içeren bir dosya yükler. [_İstemci tabanlı kimlik doğrulama_](#use-an-authentication-client) Go kodunda bir nesne kullanır ve program yürütme sırasında sizi kimlik bilgilerini sağlama görevinden sorumlu hale getirir. Son olarak, [_Cihaz belirteci kimlik doğrulaması_](#use-device-token-authentication) kullanıcıların bir belirteç ile web tarayıcısı üzerinden etkileşimli olarak oturum açmalarını gerektirir ve ortam ya da dosya tabanlı kimlik doğrulama ile kullanılamaz.
@@ -54,7 +54,7 @@ Tüm kimlik doğrulama işlevleri ve türleri `github.com/Azure/go-autorest/auto
 
 ## <a name="use-environment-based-authentication"></a>Ortam tabanlı kimlik doğrulama kullanma
 
-Uygulamanızı bir kapsayıcı gibi sıkı denetimli bir ortamda çalıştırıyorsanız, ortam tabanlı kimlik doğrulama doğal bir tercihtir. Uygulamanızı çalıştırmadan önce kabuk ortamını yapılandırdığınızda, Go SDK bu ortam değişkenlerini Azure ile kimlik doğrulamak için çalışma zamanında okur. 
+Uygulamanızı bir kapsayıcı gibi sıkı denetimli bir ortamda çalıştırıyorsanız, ortam tabanlı kimlik doğrulama doğal bir tercihtir. Uygulamanızı çalıştırmadan önce kabuk ortamını yapılandırdığınızda, Go SDK bu ortam değişkenlerini Azure ile kimlik doğrulamak için çalışma zamanında okur.
 
 Ortam tabanlı kimlik doğrulamanın, cihaz belirteçleri hariç şu sırayla değerlendirilmiş tüm kimlik doğrulama yöntemleri için desteği vardır: İstemci kimlik bilgileri, sertifikalar, kullanıcı adı/parola ve Yönetilen Hizmet Kimliği (MSI). Gerekli ortam değişkeni ayarlanmamış ya da SDK, kimlik doğrulama hizmetinden bir reddetme iletisi alıyorsa, sonraki kimlik doğrulama türü denenir. SDK ortamdan kimlik doğrulaması yapamıyorsa, bir hata döndürür.
 
@@ -109,10 +109,9 @@ Bu değişkenler Azure Stack meta data verilerinden alınabilir. Meta verileri a
 
 Azure Stack üzerinde Go için Azure SDK’sını kullanma hakkında daha fazla bilgi için [Azure Stack’te GO ile API sürümü profillerini kullanma](https://docs.microsoft.com/azure/azure-stack/user/azure-stack-version-profiles-go) sayfasına başvurun
 
-
 ## <a name="use-file-based-authentication"></a>Dosya tabanlı kimlik doğrulama kullanma
 
-Dosya tabanlı kimlik doğrulaması, istemci kimlik bilgileriyle yalnızca [Azure CLI 2.0](/cli/azure) tarafından oluşturulan yerel dosya biçiminde depolandığında çalışır. Bu dosyayı `--sdk-auth` parametresiyle yeni bir hizmet sorumlusu oluştururken kolaylıkla oluşturabilirsiniz. Dosya tabanlı kimlik doğrulama kullanmayı planlıyorsanız, hizmet sorumlusu oluştururken bu bağımsız değişkenin sağlandığından emin olun. CLI çıktıyı `stdout` öğesine yazdırdığından, çıktıyı bir dosyaya yeniden yönlendirin.
+Dosya tabanlı kimlik doğrulaması, istemci kimlik bilgileriyle yalnızca [Azure CLI](/cli/azure) tarafından oluşturulan yerel dosya biçiminde depolandığında çalışır. Bu dosyayı `--sdk-auth` parametresiyle yeni bir hizmet sorumlusu oluştururken kolaylıkla oluşturabilirsiniz. Dosya tabanlı kimlik doğrulama kullanmayı planlıyorsanız, hizmet sorumlusu oluştururken bu bağımsız değişkenin sağlandığından emin olun. CLI çıktıyı `stdout` öğesine yazdırdığından, çıktıyı bir dosyaya yeniden yönlendirin.
 
 ```azurecli
 az ad sp create-for-rbac --sdk-auth > azure.auth
@@ -127,7 +126,7 @@ import "github.com/Azure/go-autorest/autorest/azure/auth"
 authorizer, err := NewAuthorizerFromFile(azure.PublicCloud.ResourceManagerEndpoint)
 ```
 
-Hizmet sorumlularını kullanma ve erişim izinlerini yönetmeyle ilgili daha fazla bilgi için bkz. [Azure CLI 2.0 ile hizmet sorumlusu oluşturma].
+Hizmet sorumlularını kullanma ve erişim izinlerini yönetmeyle ilgili daha fazla bilgi için bkz. [Azure CLI ile hizmet sorumlusu oluşturma].
 
 ## <a name="use-device-token-authentication"></a>Cihaz belirteci kimlik doğrulaması kullanma
 
