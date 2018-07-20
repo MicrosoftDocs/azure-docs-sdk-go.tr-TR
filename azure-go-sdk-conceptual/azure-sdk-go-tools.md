@@ -4,28 +4,28 @@ description: Go için Azure SDK ve Azure hizmetleri ile çalışmaya ilişkin ar
 author: sptramer
 ms.author: sttramer
 manager: carmonm
-ms.date: 01/30/2018
+ms.date: 07/13/2018
 ms.topic: conceptual
 ms.prod: azure
 ms.technology: azure-sdk-go
 ms.devlang: go
-ms.openlocfilehash: 006d140bffb66fdd769a14511232d4ea5081811d
-ms.sourcegitcommit: 181d4e0b164cf39b3feac346f559596bd19c94db
+ms.openlocfilehash: dfa3912ac13e6f6d52d607f9dcc150f3a5b57602
+ms.sourcegitcommit: d1790b317a8fcb4d672c654dac2a925a976589d4
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 07/11/2018
-ms.locfileid: "38066991"
+ms.lasthandoff: 07/14/2018
+ms.locfileid: "39039514"
 ---
 # <a name="tools-for-developers-using-the-azure-sdk-for-go"></a>Go için Azure SDK’yı kullanan geliştiriciler için araçlar
 
 Go kodunu etkili bir şekilde yazmaya ve Go kodunun Azure hizmetleri ile sorunsuz şekilde çalışmasını sağlamaya yönelik önerilen araçlardan bazıları burada açıklanmıştır.
 
-## <a name="azure-cli-20"></a>Azure CLI 2.0
+## <a name="azure-cli"></a>Azure CLI
 
-Azure 2.0 CLI, aboneliklerinizde Azure kaynaklarını oluşturmak ve yapılandırmak için bir komut satırı arabirimi sağlar. CLI, daha karmaşık hizmet kullanımına odaklanabilmeniz için genel ve paylaşılan Azure kaynaklarını hızlı bir şekilde oluşturmaya başlamanıza yardımcı olabilir. CLI, sorgulama ve filtreleme özelliklerine sahiptir; böylece çıkışı doğrudan sık kullandığınız komut satırı araçlarına kanalize edebilirsiniz. CLI, bir Docker görüntüsü olarak veya [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview) aracılığıyla yerel sisteminize yüklenebilir.
+Azure CLI, aboneliklerinizde Azure kaynaklarını oluşturmak ve yapılandırmak için bir komut satırı arabirimi sağlar. CLI, daha karmaşık hizmet kullanımına odaklanabilmeniz için genel ve paylaşılan Azure kaynaklarını hızlı bir şekilde oluşturmaya başlamanıza yardımcı olabilir. CLI, sorgulama ve filtreleme özelliklerine sahiptir; böylece çıkışı doğrudan sık kullandığınız komut satırı araçlarına kanalize edebilirsiniz. CLI, bir Docker görüntüsü olarak veya [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview) aracılığıyla yerel sisteminize yüklenebilir.
 
 > [!div class="nextstepaction"]
-> [Azure CLI 2.0’ı yükleme](/cli/azure/install-azure-cli)
+> [Azure CLI'yı yükleme](/cli/azure/install-azure-cli)
 
 ## <a name="visual-studio-code"></a>Visual Studio Code
 
@@ -34,6 +34,13 @@ Visual Studio Code, uzantılar aracılığıyla Go dili için kapsamlı desteğe
 * [Visual Studio Code’u yükleyin](https://code.visualstudio.com/Download)
 * [Visual Studio Code Go uzantısını edinin](https://code.visualstudio.com/docs/languages/go)
 * [Azure Araçları uzantısını edinin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-azureextensionpack)
+
+## <a name="cicd-with-azure-devops-project"></a>Azure DevOps Projesi ile CI/CD
+
+Azure DevOps Projesi işlem hattı ile Go uygulamalarınız için sürekli derleme ve dağıtım ayarlayabilirsiniz. Azure kaynaklarınıza dağıtım ve doğrudan bunlar üzerinde test için gerekli kurulumu yapabilmeniz için yalnızca mevcut bir git deposu yeterlidir. Kolayca oluşturulup yönetilebilen yapılandırma işlem hattı doğrudan Azure'da sağlandığından, bunu da diğer Azure kaynaklarınızla aynı şekilde denetleyebilirsiniz.
+
+> [!div class="nextstepaction"]
+> [Azure DevOps Projesi ile CI/CD işlem hattı oluşturmayı öğrenin](/devops-project/azure-devops-project-go)
 
 ## <a name="dependency-management-with-dep"></a>dep ile bağımlılık yönetimi
 

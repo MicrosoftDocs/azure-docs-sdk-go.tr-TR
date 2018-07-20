@@ -10,16 +10,16 @@ ms.prod: azure
 ms.technology: azure-sdk-go
 ms.service: active-directory
 ms.devlang: go
-ms.openlocfilehash: 2a412d8604aa02d568044c8c250333de49f4ce0a
-ms.sourcegitcommit: f08abf902b48f8173aa6e261084ff2cfc9043305
+ms.openlocfilehash: 278ee81e180287abf3152779821b7dfb76a487e3
+ms.sourcegitcommit: 2a3bd491e087a1d0e7d269bed896c029357d62a6
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 05/03/2018
-ms.locfileid: "32319858"
+ms.lasthandoff: 07/12/2018
+ms.locfileid: "38988016"
 ---
 # <a name="azure-sdk-for-go-samples-for-authentication-and-aad"></a>Kimlik doğrulaması ve AAD’ye yönelik Go için Azure SDK örnekleri
 
-Aşağıdaki tablo Go için Azure SDK ile kimlik doğrulaması yapmak ve Azure Active Directory (AAD) hizmetleriyle çalışmak üzere kullanabileceğiniz, seçili Go kaynak kodu örnekleriyle ilişkilidir. 
+Aşağıdaki tablo Go için Azure SDK ile kimlik doğrulaması yapmak ve Azure Active Directory (AAD) hizmetleriyle çalışmak üzere kullanabileceğiniz, seçili Go kaynak kodu örnekleriyle ilişkilidir.
 
 Go için Azure SDK’ya ilişkin tüm örnekler [GitHub](https://github.com/Azure-Samples/azure-sdk-for-go-samples)’da bulunabilir.
 

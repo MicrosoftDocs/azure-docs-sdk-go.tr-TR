@@ -1,21 +1,21 @@
 ---
 title: Go’dan bir Azure sanal makinesini dağıtma
-description: Go için Azure SDK’yı kullanarak bir sanal makineyi dağıtın.
+description: Go için Azure SDK’yı kullanarak bir sanal makine dağıtın.
 author: sptramer
 ms.author: sttramer
 manager: carmonm
-ms.date: 04/03/2018
+ms.date: 07/13/2018
 ms.topic: quickstart
 ms.prod: azure
 ms.technology: azure-sdk-go
 ms.service: virtual-machines
 ms.devlang: go
-ms.openlocfilehash: 7592e8617436a76dd27cac5269971051982425bf
-ms.sourcegitcommit: 181d4e0b164cf39b3feac346f559596bd19c94db
+ms.openlocfilehash: 6b1de35748fb7694d45715fa7f028d5730530d2e
+ms.sourcegitcommit: d1790b317a8fcb4d672c654dac2a925a976589d4
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 07/11/2018
-ms.locfileid: "38067025"
+ms.lasthandoff: 07/14/2018
+ms.locfileid: "39039565"
 ---
 # <a name="quickstart-deploy-an-azure-virtual-machine-from-a-template-with-the-azure-sdk-for-go"></a>Hızlı başlangıç: Go için Azure SDK ile bir şablondan Azure sanal makinesi dağıtma
 
@@ -27,9 +27,9 @@ Bu hızlı başlangıcın sonunda, bir kullanıcı adı ve parola ile oturum aç
 
 [!INCLUDE [cloud-shell-try-it.md](includes/cloud-shell-try-it.md)]
 
-Azure CLI’nın yerel bir yüklemesini kullanıyorsanız bu hızlı başlangıç, __2.0.28__ veya sonraki CLI sürümlerini gerektirir. CLI yüklemenizin bu gereksinimi karşıladığından emin olmak için `az --version` çalıştırın. Yükleme veya yükseltme yapmanız gerekirse [Azure CLI 2.0’ı yükleyin](/cli/azure/install-azure-cli).
+Azure CLI’nın yerel bir yüklemesini kullanıyorsanız bu hızlı başlangıç, __2.0.28__ veya sonraki CLI sürümlerini gerektirir. CLI yüklemenizin bu gereksinimi karşıladığından emin olmak için `az --version` çalıştırın. Yükleme veya yükseltme yapmanız gerekirse bkz. [Azure CLI’yı yükleme](/cli/azure/install-azure-cli).
 
-## <a name="install-the-azure-sdk-for-go"></a>Go için Azure SDK’yı yükleme 
+## <a name="install-the-azure-sdk-for-go"></a>Go için Azure SDK’yı yükleme
 
 [!INCLUDE [azure-sdk-go-get](includes/azure-sdk-go-get.md)]
 
@@ -242,7 +242,9 @@ Dağıtım dosyaları `readJSON` tarafından yüklenir; bunun ayrıntıları bur
     }
 ```
 
-Bu kod, kaynak grubunun oluşturulmasıyla aynı deseni izler. Azure kimlik doğrulaması sayesinde yeni bir istemci oluşturulur ve sonra bir yöntem çağrılır. Yöntemin adı (`CreateOrUpdate`) bile kaynak grupları için karşılık gelen yöntemin adıyla aynıdır. Bu desen SDK boyunca görülür. Benzer işi gerçekleştiren yöntemler normalde aynı ada sahiptir.
+Bu kod, kaynak grubunun oluşturulmasıyla aynı deseni izler. Azure kimlik doğrulaması sayesinde yeni bir istemci oluşturulur ve sonra bir yöntem çağrılır.
+Yöntemin adı (`CreateOrUpdate`) bile kaynak grupları için karşılık gelen yöntemin adıyla aynıdır. Bu desen SDK boyunca görülür.
+Benzer işi gerçekleştiren yöntemler normalde aynı ada sahiptir.
 
 En büyük fark, `deploymentsClient.CreateOrUpdate` yönteminin dönüş değerindedir. Bu değer, [vadeli işlem tasarım desenini](https://en.wikipedia.org/wiki/Futures_and_promises) izleyen bir [Vadeli işlem](https://godoc.org/github.com/Azure/go-autorest/autorest/azure#Future) türüdür. Vadeli işlemler, tamamlanması üzerine yoklama yapabileceğiniz, iptal edeceğiniz veya engelleyebileceğiniz Azure’daki uzun süreli bir işlemi temsil eder.
 
