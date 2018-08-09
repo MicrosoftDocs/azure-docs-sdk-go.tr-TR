@@ -10,12 +10,12 @@ ms.prod: azure
 ms.technology: azure-sdk-go
 ms.service: virtual-machines
 ms.devlang: go
-ms.openlocfilehash: 4837572a50ae934e71bfe49d916c01e131bb6d83
-ms.sourcegitcommit: f08abf902b48f8173aa6e261084ff2cfc9043305
+ms.openlocfilehash: 3b31716ee42c638bab4a6dd99b9eb0d7c07e51a4
+ms.sourcegitcommit: 0f581979216f7c9d4913681a6d9f6fe09af26e43
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 05/03/2018
-ms.locfileid: "32319705"
+ms.lasthandoff: 08/02/2018
+ms.locfileid: "39475798"
 ---
 # <a name="azure-sdk-for-go-samples-for-compute-and-networking"></a>İşlem ve ağa yönelik Go için Azure SDK örnekleri
 
@@ -26,5 +26,7 @@ Go için Azure SDK’ya ilişkin tüm örnekler [GitHub](https://github.com/Azur
 | Adı | Açıklama |
 |------|-------------|
 | [network/network](https://github.com/Azure-Samples/azure-sdk-for-go-samples/blob/master/network/network.go) | Sanal ağlar, alt ağlar, ağ güvenliği grupları gibi ağ kaynaklarını oluşturun, güncelleştirin, silin ve sorgulayın. |
-| [compute/loadbalancer](https://github.com/Azure-Samples/azure-sdk-for-go-samples/blob/master/compute/loadbalancer.go) | Bir yük dengeleyicisi ile kullanılabilirlik gruplarını oluşturup sorgulayın ve VM’ler oluşturun. |
-| [compute/compute](https://github.com/Azure-Samples/azure-sdk-for-go-samples/blob/master/compute/compute.go) | VM’ler oluşturun, silin, güncelleştirin ve bunların güç yönetimini sağlayın. Veri diskleriyle çalışın ve VM’nin işletim sistemi diskini yönetin. |
+| [compute/vm_disk](https://github.com/Azure-Samples/azure-sdk-for-go-samples/blob/master/compute/vm_disk.go) | Bir VM’de veri diskleri oluşturun, kullanıma açın, kullanıma kapatın, güncelleştirin ve şifreleyin. |
+| [compute/vm](https://github.com/Azure-Samples/azure-sdk-for-go-samples/blob/master/compute/vm.go) | VM’leri oluşturun, güncelleştirin, devre dışı bırakın ve yönetin. |
+| [compute/vm_with_availabilityset](https://github.com/Azure-Samples/azure-sdk-for-go-samples/blob/master/compute/vm_with_availabilityset.go) | VM’ler için kullanılabilirlik kümeleri ve yük dengeleyicileri oluşturun. |
+| [compute/vm_with_identity](https://github.com/Azure-Samples/azure-sdk-for-go-samples/blob/master/compute/vm_with_identity.go) | VM’ler için Yönetilen Hizmet Kimlikleri (MSI’ler) oluşturun ve bunları yönetin. |
