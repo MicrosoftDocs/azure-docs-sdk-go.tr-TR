@@ -9,12 +9,12 @@ ms.topic: conceptual
 ms.prod: azure
 ms.technology: azure-sdk-go
 ms.devlang: go
-ms.openlocfilehash: 3388359bba791c87025b6ffd0e6b476f95589f73
-ms.sourcegitcommit: 81e97407e6139375bf7357045e818c87a17dcde1
+ms.openlocfilehash: 013a771345d96f0fa8dbece3218a01650744f70b
+ms.sourcegitcommit: 8b9e10b960150dc08f046ab840d6a5627410db29
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 06/19/2018
-ms.locfileid: "36262997"
+ms.lasthandoff: 09/07/2018
+ms.locfileid: "44059195"
 ---
 # <a name="install-the-azure-sdk-for-go"></a>Go için Azure SDK’yı yükleme
 
@@ -37,9 +37,9 @@ Bazı Azure hizmetlerinin kendi Go SDK’sı bulunur ve bu hizmetler Go için Az
 
 ## <a name="vendor-the-azure-sdk-for-go"></a>Go için Azure SDK’yı satıcı dizinine taşıma
 
-Go için Azure SDK, [dep](https://github.com/golang/dep) üzerinden satıcı dizinine taşınabilir. Kararlılık nedeniyle satıcı dizinine taşınması önerilir. `dep` desteğini kullanmak amacıyla `Gopkg.toml` için `[[constraint]]` bölümüne `github.com/Azure/azure-sdk-for-go` ekleyin. Örneğin, `14.0.0` sürümünde satıcı dizinine taşımak için şu girişi ekleyin:
+Go için Azure SDK, [dep](https://github.com/golang/dep) üzerinden satıcı dizinine taşınabilir. Kararlılık nedeniyle satıcı dizinine taşınması önerilir. Projenizde `dep` kullanmak için `github.com/Azure/azure-sdk-for-go` nesnesini `Gopkg.toml` öğenizdeki `[[constraint]]` bölümlerinden birine ekleyin. Örneğin, `14.0.0` sürümünde satıcı dizinine taşımak için şu girişi ekleyin:
 
-```
+```toml
 [[constraint]]
 name = "github.com/Azure/azure-sdk-for-go"
 version = "14.0.0"
@@ -62,13 +62,14 @@ Go kodunuzdan Azure hizmetlerini kullanmak için, etkileşim kurduğunuz hizmetl
 [autorest/adal]: https://godoc.org/github.com/Azure/go-autorest/autorest/adal
 [autorest/to]: https://godoc.org/github.com/Azure/go-autorest/autorest/to
 
-Azure hizmetlerine ilişkin modüllerin, kendi SDK API’lerinden bağımsız olarak sürümü oluşturulur. Bu sürümler, modül içeri aktarma yolunun parçasıdır ve bir _hizmet sürümünden_ veya bir _profilden_ gelir. Şu anda geliştirme ve yayınlama için belirli bir hizmet sürümünü kullanmanız önerilir. Hizmetler, `services` modülünün altında bulunur. İçeri aktarmanın tam yolu, hizmetin adını takip eden `YYYY-MM-DD` biçiminde sürüm ve tekrar hizmet adından oluşur. Örneğin, İşlem hizmetinin `2017-03-30` sürümünü dahil etmek için:
+Go paketlerinin ve Azure hizmetlerinin sürümleri ayrı tutulur. Hizmet sürümleri `services` modülünün altında bulunan modül içeri aktarma yolunun bir parçasıdır. Modülün tam yolu, hizmetin adını takip eden `YYYY-MM-DD` biçiminde sürüm ve tekrar hizmet adından oluşur. Örneğin, İşlem hizmetinin `2017-03-30` sürümünü içeri aktarmak için:
 
 ```go
 import "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2017-03-30/compute"
 ```
 
-Şu anda, aksini yapmak için bir nedeniniz yoksa, bir hizmetin en son sürümünü kullanmanız önerilir.
+Geliştirmeye başlarken hizmetin son sürümünü kullanmanız ve tutarlılık sağlamanız önerilir.
+Sürümler arasında ortaya çıkan hizmet gereksinimi değişiklikleri Go SDK güncelleştirmesi olmasa da kodunuzda hataya neden olabilir.
 
 Hizmetlerin toplu bir anlık görüntüsüne ihtiyacınız varsa tek bir profil sürümünü de seçebilirsiniz. Şu anda tek kilitli profil olan `2017-03-09` sürümü, hizmetin en son özelliklerini içermeyebilir. Profiller, `profiles` modülünün altında bulunur ve sürümü `YYYY-MM-DD` biçimindedir. Hizmetler, kendi profil sürümleri altında gruplanır. Örneğin, `2017-03-09` profilinden Azure Kaynakları yönetim modülünü içeri aktarmak için:
 

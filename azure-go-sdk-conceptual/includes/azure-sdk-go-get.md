@@ -2,21 +2,21 @@
 author: sptramer
 ms.author: sttramer
 manager: carmonm
-ms.date: 02/14/2018
+ms.date: 09/05/2018
 ms.topic: include
 ms.prod: azure
 ms.technology: azure-cli
-ms.openlocfilehash: d021dd8ef4744b7c50b296b231bf63481f92411a
-ms.sourcegitcommit: 2a3bd491e087a1d0e7d269bed896c029357d62a6
+ms.openlocfilehash: 5df14f939efdd0550b49261c88c8dc6518ada459
+ms.sourcegitcommit: 8b9e10b960150dc08f046ab840d6a5627410db29
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 07/12/2018
-ms.locfileid: "38988083"
+ms.lasthandoff: 09/07/2018
+ms.locfileid: "44059280"
 ---
-[Go için Azure SDK](https://github.com/Azure/azure-sdk-for-go), Go 1.8 ve sonraki sürümlerle uyumludur. [Azure Stack Profilleri](https://docs.microsoft.com/azure/azure-stack/azure-stack-version-profiles) kullanan ortamlar için en az Go 1.9 sürümü gerekir.
-Sisteminizde Go yoksa [Go yükleme yönergelerini](https://golang.org/doc/install) izleyin.
+[Go için Azure SDK](https://github.com/Azure/azure-sdk-for-go), Go 1.8 ve sonraki sürümlerle uyumludur. [Azure Stack Profilleri](/azure/azure-stack/user/azure-stack-version-profiles-go) kullanan ortamlar için en az Go 1.9 sürümü gerekir.
+Go'yu yüklemeniz gerekiyorsa [Go yükleme yönergelerini](https://golang.org/doc/install) izleyin.
 
-Go için Azure SDK ve bağımlılıklarını `go get` üzerinden edinebilirsiniz.
+Go için Azure SDK ve bağımlılıklarını `go get` üzerinden indirebilirsiniz.
 
 ```bash
 go get -u -d github.com/Azure/azure-sdk-for-go/...

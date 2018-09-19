@@ -1,20 +1,20 @@
 ---
-title: Go geliştiricileri için araçlar
+title: Go için Azure SDK’yı kullanan geliştiriciler için araçlar
 description: Go için Azure SDK ve Azure hizmetleri ile çalışmaya ilişkin araçlar
 author: sptramer
 ms.author: sttramer
 manager: carmonm
-ms.date: 07/13/2018
+ms.date: 09/05/2018
 ms.topic: conceptual
 ms.prod: azure
 ms.technology: azure-sdk-go
 ms.devlang: go
-ms.openlocfilehash: dfa3912ac13e6f6d52d607f9dcc150f3a5b57602
-ms.sourcegitcommit: d1790b317a8fcb4d672c654dac2a925a976589d4
+ms.openlocfilehash: 70cf7d645f47df29e8e42599a0acd75858144783
+ms.sourcegitcommit: 8b9e10b960150dc08f046ab840d6a5627410db29
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 07/14/2018
-ms.locfileid: "39039514"
+ms.lasthandoff: 09/07/2018
+ms.locfileid: "44059212"
 ---
 # <a name="tools-for-developers-using-the-azure-sdk-for-go"></a>Go için Azure SDK’yı kullanan geliştiriciler için araçlar
 
@@ -29,22 +29,22 @@ Azure CLI, aboneliklerinizde Azure kaynaklarını oluşturmak ve yapılandırmak
 
 ## <a name="visual-studio-code"></a>Visual Studio Code
 
-Visual Studio Code, uzantılar aracılığıyla Go dili için kapsamlı desteğe sahip basit bir düzenleyicidir. Bu uzantılar, otomatik tamamlama, `impl` şablonları, yeniden düzenleme ve hata ayıklama gibi özelliklere yönelik destek içerir. Visual Studio Code ayrıca kaynak denetimi gibi yaygın geliştirici araçları için birçok uzantı ve hatta Azure hizmetleriyle doğrudan etkileşim için uzantılar da sunar. Microsoft, Azure CLI için etkileşimli bir arabirim de dahil olmak üzere bu Azure uzantılarını içeren resmi bir meta uzantıyı korur.
+Visual Studio Code, Go desteği sunan basit bir düzenleyicidir. Bu uzantı otomatik tamamlama, `impl` şablonları, yeniden düzenleme ve hata ayıklama gibi özellikler sunar. Visual Studio Code ayrıca kaynak denetimine düzenleyici içinden erişim desteği ve Azure hizmetleriyle çalışmak için kullanılabilecek uzantılar sunar.
 
 * [Visual Studio Code’u yükleyin](https://code.visualstudio.com/Download)
 * [Visual Studio Code Go uzantısını edinin](https://code.visualstudio.com/docs/languages/go)
-* [Azure Araçları uzantısını edinin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-azureextensionpack)
+* [Visual Studio Code Azure Araçları uzantısını edinin](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-azureextensionpack)
 
 ## <a name="cicd-with-azure-devops-project"></a>Azure DevOps Projesi ile CI/CD
 
-Azure DevOps Projesi işlem hattı ile Go uygulamalarınız için sürekli derleme ve dağıtım ayarlayabilirsiniz. Azure kaynaklarınıza dağıtım ve doğrudan bunlar üzerinde test için gerekli kurulumu yapabilmeniz için yalnızca mevcut bir git deposu yeterlidir. Kolayca oluşturulup yönetilebilen yapılandırma işlem hattı doğrudan Azure'da sağlandığından, bunu da diğer Azure kaynaklarınızla aynı şekilde denetleyebilirsiniz.
+Azure DevOps Projesi işlem hatları, Go uygulamalarınız için sürekli tümleştirme sistemi ayarlamanızı sağlar. İhtiyacınız olan tek şey bir git deposudur ve doğrudan Azure üzerinde dağıtma ve test gerçekleştirebilirsiniz.
 
 > [!div class="nextstepaction"]
-> [Azure DevOps Projesi ile CI/CD işlem hattı oluşturmayı öğrenin](/devops-project/azure-devops-project-go)
+> [Azure DevOps Projesi ile CI/CD işlem hattı oluşturmayı öğrenin](/azure/devops-project/azure-devops-project-go)
 
 ## <a name="dependency-management-with-dep"></a>dep ile bağımlılık yönetimi
 
-Paket bağımlılıklarınızı yönetmenin ve Go ile satıcı dizinine taşıma işlemi yapmanın birçok yolu olsa da henüz resmi bir çözüm yoktur. Bu yönetimin, `dep` bağımlılık yöneticisi ile gerçekleştirilmesi önerilir. Go için Azure SDK, satıcı dizinine taşıma işlemi için dep kullanır ve dep kullanan diğer projelere ilişkin bağımlılıkları doğru şekilde alacağı kesindir.
+Go için Azure SDK, bağımlılık yönetimi için dep kullanır. dep komutu Go uygulamanız için satıcı gereksinimlerini çekmenizi ve çakışmalardan kaçınarak projenizin doğru bir şekilde çalıştığından emin olmanızı sağlar.
 
 > [!div class="nextstepaction"]
 > [dep bağımlılık yöneticisini edinin](https://github.com/golang/dep)

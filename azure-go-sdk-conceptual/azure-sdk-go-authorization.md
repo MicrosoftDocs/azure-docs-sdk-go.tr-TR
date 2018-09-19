@@ -5,34 +5,33 @@ services: azure
 author: sptramer
 ms.author: sttramer
 manager: carmonm
-ms.date: 04/03/2018
+ms.date: 09/05/2018
 ms.topic: conceptual
-ms.prod: azure
 ms.technology: azure-sdk-go
 ms.devlang: go
 ms.service: active-directory
 ms.component: authentication
-ms.openlocfilehash: f5e76fc745512a3a52172f560c3a24f510e96feb
-ms.sourcegitcommit: d1790b317a8fcb4d672c654dac2a925a976589d4
+ms.openlocfilehash: 28fd4a4c0832ab19dcf52dc549d0ddc0d1eec6f1
+ms.sourcegitcommit: 8b9e10b960150dc08f046ab840d6a5627410db29
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 07/14/2018
-ms.locfileid: "39039548"
+ms.lasthandoff: 09/07/2018
+ms.locfileid: "44059110"
 ---
 # <a name="authentication-methods-in-the-azure-sdk-for-go"></a>Go için Azure SDK’da kimlik doğrulama yöntemleri
 
-Go için Azure SDK, uygulamanızın kullanabileceği çeşitli kimlik doğrulama türleri ve yöntemleri sunar. Desteklenen kimlik doğrulama yöntemleri, ortam değişkenlerinden bilgi çekme ile etkileşimli web tabanlı kimlik doğrulama arasında değişiklik gösterir. Bu makale size SDK’da bulunan kullanılabilir kimlik doğrulama türlerini ve bunları kullanmaya yönelik yöntemleri tanıtır. Ayrıca uygulamanız için doğru kimlik doğrulama türünü seçmeye yönelik en iyi yöntemleri öğreneceksiniz.
+Go için Azure SDK, Azure ile kimlik doğrulama gerçekleştirmek için birden fazla yöntem sunar. Bu kimlik doğrulama _türleri_ farklı kimlik doğrulama _yöntemleriyle_ çağrılır. Bu makalede kullanabileceğiniz tür ve yöntemlerin yanı sıra uygulamanıza en uygun seçeneği belirleme yollarına yer verilmiştir.
 
 ## <a name="available-authentication-types-and-methods"></a>Kullanılabilir kimlik doğrulama türleri ve yöntemleri
 
-Go için Azure SDK, farklı kimlik bilgileri kümeleri kullanarak birkaç farklı türde kimlik doğrulaması sunar. Bu kimlik doğrulama türlerinden her biri, SDK’nın bu kimlik bilgilerini giriş olarak alması gibi, farklı kimlik doğrulama yöntemleri aracılığıyla kullanılabilir. Aşağıdaki tabloda uygulamanız tarafından kullanılması önerilen uygun kimlik doğrulama türleri açıklanmaktadır.
+Go için Azure SDK, farklı kimlik bilgileri kümeleri kullanarak birkaç farklı türde kimlik doğrulaması sunar. Kimlik doğrulama türlerinden her biri, SDK’nın bu kimlik bilgilerini giriş olarak alması gibi, farklı kimlik doğrulama yöntemleri aracılığıyla kullanılabilir. Aşağıdaki tabloda uygulamanız tarafından kullanılması önerilen uygun kimlik doğrulama türleri açıklanmaktadır.
 
 | Kimlik doğrulaması türü | Şunlar olduğunda önerilir... |
 |---------------------|---------------------|
 | Sertifika tabanlı kimlik doğrulaması | Azure Active Directory (AAD) kullanıcısı veya hizmet sorumlusu için yapılandırılmış bir X509 sertifikasına sahipsiniz. Daha fazla bilgi için bkz. [Azure Active Directory’de sertifika tabanlı kimlik doğrulamayı kullanmaya başlama]. |
 | İstemci kimlik bilgileri | Bu uygulamaya veya ait olduğu uygulama sınıfına ayarlı yapılandırılmış bir hizmet sorumlusuna sahipsiniz. Daha fazla bilgi için bkz. [Azure CLI ile hizmet sorumlusu oluşturma]. |
 | Yönetilen Hizmet Kimliği (MSI) | Uygulamanız, Yönetilen Hizmet Kimliği (MSI) ile yapılandırılmış bir Azure kaynak üzerinde çalışıyor. Daha fazla bilgi için bkz. [Azure kaynakları için Yönetilen Hizmet Kimliği (MSI)]. |
-| Cihaz belirteci | Uygulamanızın __yalnızca__ etkileşimli olarak kullanılması amaçlanmıştır ve potansiyel olarak birden çok AAD kiracısından olan çeşitli kullanıcılara sahip olacaktır. Kullanıcıların oturum açmak için bir web tarayıcısına erişimi olur. Daha fazla bilgi için bkz. [Cihaz belirteci kimlik doğrulaması kullanma](#use-device-token-authentication).|
+| Cihaz belirteci | Uygulamanız __yalnızca__ etkileşimli olarak kullanılacak şekilde tasarlanmıştır. Kullanıcılarda çok faktörlü kimlik doğrulaması etkin olabilir. Kullanıcıların oturum açmak için bir web tarayıcısına erişimi olur. Daha fazla bilgi için bkz. [Cihaz belirteci kimlik doğrulaması kullanma](#use-device-token-authentication).|
 | Kullanıcı adı/parola | Başka herhangi bir kimlik doğrulama yöntemi kullanamayan etkileşimli bir uygulamaya sahipsiniz. Kullanıcılarınızın çok faktörlü kimlik doğrulaması özelliği AAD oturum açma işlemleri için etkinleştirilmemiş. |
 
 > [!IMPORTANT]
@@ -45,7 +44,12 @@ Go için Azure SDK, farklı kimlik bilgileri kümeleri kullanarak birkaç farkl�
 [Azure CLI ile hizmet sorumlusu oluşturma]: /cli/azure/create-an-azure-service-principal-azure-cli
 [Azure kaynakları için Yönetilen Hizmet Kimliği (MSI)]: /azure/active-directory/managed-service-identity/overview
 
-Bu kimlik doğrulama türleri farklı yöntemler üzerinden kullanılabilir. [_Ortam tabanlı kimlik doğrulama_](#use-environment-based-authentication) kimlik bilgilerini doğrudan programın ortamından okur. [_Dosya tabanlı kimlik doğrulama_](#use-file-based-authentication) hizmet sorumlusu kimlik bilgilerini içeren bir dosya yükler. [_İstemci tabanlı kimlik doğrulama_](#use-an-authentication-client) Go kodunda bir nesne kullanır ve program yürütme sırasında sizi kimlik bilgilerini sağlama görevinden sorumlu hale getirir. Son olarak, [_Cihaz belirteci kimlik doğrulaması_](#use-device-token-authentication) kullanıcıların bir belirteç ile web tarayıcısı üzerinden etkileşimli olarak oturum açmalarını gerektirir ve ortam ya da dosya tabanlı kimlik doğrulama ile kullanılamaz.
+Bu kimlik doğrulama türleri farklı yöntemler üzerinden kullanılabilir.
+
+* [_Ortam tabanlı kimlik doğrulama_](#use-environment-based-authentication) kimlik bilgilerini doğrudan programın ortamından okur.
+* [_Dosya tabanlı kimlik doğrulama_](#use-file-based-authentication) hizmet sorumlusu kimlik bilgilerini içeren bir dosya yükler.
+* [_İstemci tabanlı kimlik doğrulama_](#use-an-authentication-client), kodda bir nesne kullanır ve program yürütme sırasında sizi kimlik bilgilerini sağlama görevinden sorumlu hale getirir.
+* [_Cihaz belirteci kimlik doğrulama_](#use-device-token-authentication), kullanıcının bir web tarayıcısından etkileşimli olarak oturum açmasını gerektirir.
 
 Tüm kimlik doğrulama işlevleri ve türleri `github.com/Azure/go-autorest/autorest/azure/auth` paketinde kullanılabilir.
 
@@ -54,9 +58,16 @@ Tüm kimlik doğrulama işlevleri ve türleri `github.com/Azure/go-autorest/auto
 
 ## <a name="use-environment-based-authentication"></a>Ortam tabanlı kimlik doğrulama kullanma
 
-Uygulamanızı bir kapsayıcı gibi sıkı denetimli bir ortamda çalıştırıyorsanız, ortam tabanlı kimlik doğrulama doğal bir tercihtir. Uygulamanızı çalıştırmadan önce kabuk ortamını yapılandırdığınızda, Go SDK bu ortam değişkenlerini Azure ile kimlik doğrulamak için çalışma zamanında okur.
+Uygulamanızı denetimli bir ortamda çalıştırıyorsanız, ortam tabanlı kimlik doğrulama doğal bir tercihtir. Bu kimlik doğrulama yöntemiyle uygulamanızı çalıştırmadan önce kabuk ortamını yapılandırırsınız. Çalışma zamanında Go SDK'sı bu ortam değişkenlerini okuyarak Azure ile kimlik doğrulama gerçekleştirir.
 
-Ortam tabanlı kimlik doğrulamanın, cihaz belirteçleri hariç şu sırayla değerlendirilmiş tüm kimlik doğrulama yöntemleri için desteği vardır: İstemci kimlik bilgileri, sertifikalar, kullanıcı adı/parola ve Yönetilen Hizmet Kimliği (MSI). Gerekli ortam değişkeni ayarlanmamış ya da SDK, kimlik doğrulama hizmetinden bir reddetme iletisi alıyorsa, sonraki kimlik doğrulama türü denenir. SDK ortamdan kimlik doğrulaması yapamıyorsa, bir hata döndürür.
+Ortam tabanlı kimlik doğrulamanın, cihaz belirteçleri hariç şu sırayla değerlendirilmiş tüm kimlik doğrulama yöntemleri için desteği vardır:
+
+* İstemci kimlik bilgileri
+* X509 sertifikaları
+* Kullanıcı adı/parola
+* Yönetilen Hizmet Kimliği (MSI)
+
+Bir kimlik doğrulama türü ayarlanmamış değerlere sahipse veya reddedilirse SDK otomatik olarak bir sonraki kimlik doğrulama türünü dener. Denenecek tür kalmadığında SDK bir hata döndürür.
 
 Aşağıdaki tabloda ortam tabanlı kimlik doğrulama tarafından desteklenen her bir kimlik doğrulama türüne ayarlanması gereken ortam değişkenlerinin ayrıntıları verilmektedir.
 
@@ -73,14 +84,14 @@ Aşağıdaki tabloda ortam tabanlı kimlik doğrulama tarafından desteklenen he
 | | `AZURE_CLIENT_ID` | Uygulama istemci kimliği. |
 | | `AZURE_USERNAME` | Oturum açmada kullanılan kullanıcı adı. |
 | | `AZURE_PASSWORD` | Oturum açmada kullanılan parola. |
-| __MSI__ | | MSI, ayarlanacak herhangi bir kimlik bilgisi gerektirmez. Uygulama, MSI kullanmak üzere yapılandırılmış bir Azure kaynağında çalışıyor olmalıdır. Ayrıntılı bilgi için bkz. [Azure kaynakları için Yönetilen Hizmet Kimliği (MSI)]. |
+| __MSI__ | | MSI kimlik doğrulama için kimlik bilgilerine ihtiyaç duyulmaz. Uygulama, MSI kullanmak üzere yapılandırılmış bir Azure kaynağında çalışıyor olmalıdır. Ayrıntılı bilgi için bkz. [Azure kaynakları için Yönetilen Hizmet Kimliği (MSI)]. |
 
-Varsayılan Azure genel bulut dışında başka bir bulut ya da yönetim uç noktasına bağlanmanız gerekiyorsa, aşağıdaki ortam değişkenlerini de ayarlayabilirsiniz. Bunları ayarlamak için en yaygın nedenler, Azure Stack, farklı bir coğrafi bölgede bulut veya Azure Klasik dağıtım modeli kullanmaktır.
+Varsayılan Azure genel bulut dışında başka bir bulut ya da yönetim uç noktasına bağlanmak için aşağıdaki ortam değişkenlerini ayarlayın. En yaygın nedenler, Azure Stack, farklı bir coğrafi bölgede bulut veya klasik dağıtım modeli kullanmaktır.
 
 | Ortam değişkeni | Açıklama  |
 |----------------------|--------------|
 | `AZURE_ENVIRONMENT` | Bağlanılacak bulut ortamı adı. |
-| `AZURE_AD_RESOURCE` | Bağlanırken kullanılacak Active Directory kaynak kimliği. Bu, yönetim uç noktanıza işaret eden bir URI olmalıdır. |
+| `AZURE_AD_RESOURCE` | Bağlantı için kullanılacak Active Directory kaynak kimliği, yönetim uç noktanızın URI'si olarak. |
 
 Ortam tabanlı kimlik doğrulaması kullanırken, yetkilendirici nesnenizi almak için [NewAuthorizerFromEnvironment](https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth#NewAuthorizerFromEnvironment) işlevini çağırın. Bu nesne daha sonra Azure’a erişmesine izin vermek için istemcilerin `Authorizer` özelliğinde ayarlanır.
 
@@ -107,11 +118,11 @@ Bu değişkenler Azure Stack meta data verilerinden alınabilir. Meta verileri a
 | Geliştirme Seti | `https://management.local.azurestack.external/` |
 | Tümleşik Sistemler | `https://management.(region).ext-(machine-name).(FQDN)` |
 
-Azure Stack üzerinde Go için Azure SDK’sını kullanma hakkında daha fazla bilgi için [Azure Stack’te GO ile API sürümü profillerini kullanma](https://docs.microsoft.com/azure/azure-stack/user/azure-stack-version-profiles-go) sayfasına başvurun
+Azure Stack üzerinde Go için Azure SDK’sını kullanma hakkında daha fazla bilgi için bkz. [Azure Stack’te GO ile API sürümü profillerini kullanma](https://docs.microsoft.com/azure/azure-stack/user/azure-stack-version-profiles-go)
 
 ## <a name="use-file-based-authentication"></a>Dosya tabanlı kimlik doğrulama kullanma
 
-Dosya tabanlı kimlik doğrulaması, istemci kimlik bilgileriyle yalnızca [Azure CLI](/cli/azure) tarafından oluşturulan yerel dosya biçiminde depolandığında çalışır. Bu dosyayı `--sdk-auth` parametresiyle yeni bir hizmet sorumlusu oluştururken kolaylıkla oluşturabilirsiniz. Dosya tabanlı kimlik doğrulama kullanmayı planlıyorsanız, hizmet sorumlusu oluştururken bu bağımsız değişkenin sağlandığından emin olun. CLI çıktıyı `stdout` öğesine yazdırdığından, çıktıyı bir dosyaya yeniden yönlendirin.
+Dosya tabanlı kimlik doğrulama yönteminde [Azure CLI](/cli/azure) tarafından oluşturulan bir dosya biçimi kullanılır. Bu dosyayı `--sdk-auth` parametresiyle yeni bir hizmet sorumlusu oluştururken kolaylıkla oluşturabilirsiniz. Dosya tabanlı kimlik doğrulama kullanmayı planlıyorsanız, hizmet sorumlusu oluştururken bu bağımsız değişkenin sağlandığından emin olun. CLI çıktıyı `stdout` öğesine yazdırdığından, çıktıyı bir dosyaya yeniden yönlendirin.
 
 ```azurecli
 az ad sp create-for-rbac --sdk-auth > azure.auth
@@ -130,7 +141,7 @@ Hizmet sorumlularını kullanma ve erişim izinlerini yönetmeyle ilgili daha fa
 
 ## <a name="use-device-token-authentication"></a>Cihaz belirteci kimlik doğrulaması kullanma
 
-Kullanıcıların etkileşimli olarak oturum açmasını istiyorsanız, bu olanağı sunmanın en iyi yolu cihaz belirteci kimlik doğrulamasından geçer. Bu kimlik doğrulama akışı, bir Microsoft oturum açma sitesine yapıştırmak üzere kullanıcıya bir belirteç geçirir. Kullanıcı daha sonra bu sitede bir Azure Active Directory (AAD) hesabıyla kimlik doğrulaması yapar. Bu kimlik doğrulama yöntemi, standart kullanıcı adı/parola kimlik doğrulamasının aksine, çok faktörlü kimlik doğrulamasının etkinleştirildiği hesapları destekler.
+Kullanıcıların etkileşimli olarak oturum açmasını istiyorsanız, en iyi yol cihaz belirteci kimlik doğrulamasıdır. Bu kimlik doğrulama akışı, bir Microsoft oturum açma sitesine yapıştırmak üzere kullanıcıya bir belirteç geçirir. Kullanıcı daha sonra bu sitede bir Azure Active Directory (AAD) hesabıyla kimlik doğrulaması yapar. Bu kimlik doğrulama yöntemi, standart kullanıcı adı/parola kimlik doğrulamasının aksine, çok faktörlü kimlik doğrulamasının etkinleştirildiği hesapları destekler.
 
 Cihaz belirteci kimlik doğrulamasını kullanmak için, [NewDeviceFlowConfig](https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth#NewDeviceFlowConfig) işleviyle bir [DeviceFlowConfig](https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth#DeviceFlowConfig) yetkilendiricisi oluşturun. Kimlik doğrulama işlemini başlatmak için sonuç nesnesinin üzerinde [Authorizer](https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth#DeviceFlowConfig.Authorizer) işlevini çağırın. Cihaz akışı kimlik doğrulaması, tüm kimlik doğrulama akışı tamamlanana kadar program yürütmesini engeller.
 
@@ -142,7 +153,11 @@ authorizer, err := deviceConfig.Authorizer()
 
 ## <a name="use-an-authentication-client"></a>Kimlik doğrulama istemcisini kullanma
 
-Belirli bir türde kimlik doğrulama gerekiyorsa ve programınızın kullanıcıdan kimlik doğrulama bilgilerini yükleme işini yapmasını kabul ediyorsanız, [auth.AuthorizerConfig](https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth#AuthorizerConfig) arabirimiyle uyumlu olan herhangi bir istemciyi kullanabilirsiniz. Etkileşimli bir program istiyorsanız bu arabirimi uygulayan bir türü veya özelleştirilmiş yapılandırma dosyalarını kullanın ya da başka bir kimlik doğrulama yöntemi kullanmanızı önleyecek bir gereksinim edinin.
+Belirli bir türde kimlik doğrulama gerekiyorsa ve programınızın kullanıcıdan kimlik doğrulama bilgilerini yükleme işini yapmasını kabul ediyorsanız, [auth.AuthorizerConfig](https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth#AuthorizerConfig) arabirimiyle uyumlu olan herhangi bir istemciyi kullanabilirsiniz. Aşağıdaki durumlarda bu arabirimi uygulayan bir tür kullanabilirsiniz:
+
+* Etkileşimli program yazma
+* Özel yapılandırma dosyaları kullanma
+* Yerleşik kimlik doğrulama yöntemini kullanmanızı engelleyen bir gereksinime sahip olma
 
 > [!WARNING]
 > Azure kimlik bilgilerini asla bir uygulamaya doğrudan yazmayın. Uygulama ikili dosyasına gizli diziler koymak, uygulama çalışsa da çalışmasa da saldırganın bu gizli dizileri ayıklamasını kolaylaştırır. Bu kimlik bilgilerinin yetkilendirildiği tüm Azure kaynaklarını tehlikeye atar!
@@ -162,7 +177,7 @@ Aşağıdaki tabloda SDK’da `AuthorizerConfig` arabirimiyle uyumlu olan türle
 [DeviceFlowConfig]: https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth#DeviceFlowConfig
 [UsernamePasswordConfig]: https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth#UsernamePasswordConfig
 
-İlişkili olduğu `New` işleviyle birlikte bir doğrulayıcı oluşturun ve ardından kimlik doğrulama işlemini gerçekleştirmek için sonuç nesnesi üzerinde `Authorize` işlevini çağırın. Örneğin, sertifika tabanlı kimlik doğrulaması kullanmak için:
+İlişkili olduğu `New` işleviyle birlikte bir doğrulayıcı oluşturun ve ardından kimlik doğrulama için sonuç nesnesi üzerinde `Authorize` işlevini çağırın. Örneğin, sertifika tabanlı kimlik doğrulaması kullanmak için:
 
 ```go
 import "github.com/Azure/go-autorest/autorest/azure/auth"

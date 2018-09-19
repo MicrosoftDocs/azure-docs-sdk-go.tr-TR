@@ -4,24 +4,26 @@ description: Go için Azure SDK’yı kullanarak bir sanal makine dağıtın.
 author: sptramer
 ms.author: sttramer
 manager: carmonm
-ms.date: 07/13/2018
+ms.date: 09/05/2018
 ms.topic: quickstart
-ms.prod: azure
 ms.technology: azure-sdk-go
 ms.service: virtual-machines
 ms.devlang: go
-ms.openlocfilehash: 6b1de35748fb7694d45715fa7f028d5730530d2e
-ms.sourcegitcommit: d1790b317a8fcb4d672c654dac2a925a976589d4
+ms.openlocfilehash: a7970be0857fd414d776241b033af0c23457790c
+ms.sourcegitcommit: 8b9e10b960150dc08f046ab840d6a5627410db29
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 07/14/2018
-ms.locfileid: "39039565"
+ms.lasthandoff: 09/07/2018
+ms.locfileid: "44059144"
 ---
 # <a name="quickstart-deploy-an-azure-virtual-machine-from-a-template-with-the-azure-sdk-for-go"></a>Hızlı başlangıç: Go için Azure SDK ile bir şablondan Azure sanal makinesi dağıtma
 
-Bu hızlı başlangıç, Go için Azure SDK ile bir şablondan kaynakları dağıtmaya odaklanır. Şablonlar, [Azure kaynak grubu](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-overview) içinde bulunan tüm kaynakların anlık görüntüleridir. İlerledikçe, kullanışlı bir görevi gerçekleştirirken SDK’nın işlevlerini ve kurallarını öğreneceksiniz.
+Bu hızlı başlangıçta Go için Azure SDK'yı kullanarak Azure Resource Manager şablonundan kaynak dağıtma adımları gösterilmektedir. Şablonlar, bir [Azure kaynak grubu](/azure/azure-resource-manager/resource-group-overview) içindeki tüm kaynakların anlık görüntüleridir. İlerledikçe SDK’nın işlevlerini ve kurallarını öğreneceksiniz.
 
 Bu hızlı başlangıcın sonunda, bir kullanıcı adı ve parola ile oturum açtığınız çalışan bir sanal makineniz olacaktır.
+
+> [!NOTE]
+> Go içinde Resource Manager şablonu kullanılmadan VM oluşturma adımlarını görmek için SDK ile VM kaynağı oluşturma ve yapılandırma süreçlerini gösteren bu [kesinlik temelli örneği](https://github.com/Azure-Samples/azure-sdk-for-go-samples/blob/master/compute/vm.go) inceleyin. Bu örnekte şablon kullanılmasının nedeni, Azure hizmet mimarisinin ayrıntılarına fazla girmeden SDK kurallarına odaklanmaktır.
 
 [!INCLUDE [quickstarts-free-trial-note](includes/quickstarts-free-trial-note.md)]
 
@@ -38,7 +40,7 @@ Azure CLI’nın yerel bir yüklemesini kullanıyorsanız bu hızlı başlangı�
 Bir uygulama ile Azure’da etkileşimli olmadan oturum açmak için hizmet sorumlusu gerekir. Hizmet sorumluları, benzersiz bir kullanıcı kimliği oluşturan rol tabanlı erişim denetiminin (RBAC) parçasıdır. CLI ile yeni bir hizmet sorumlusu oluşturmak için aşağıdaki komutu çalıştırın:
 
 ```azurecli-interactive
-az ad sp create-for-rbac --name az-go-vm-quickstart --sdk-auth > quickstart.auth
+az ad sp create-for-rbac --sdk-auth > quickstart.auth
 ```
 
 `AZURE_AUTH_LOCATION` ortam değişkenini bu dosyaya giden tam yol olacak şekilde ayarlayın. Daha sonra hizmet sorumlusundan herhangi bir değişiklik yapmanıza veya bilgi kaydetmenize gerek kalmadan SDK kimlik bilgilerini bulur ve doğrudan bu dosyadan okur.
@@ -62,13 +64,7 @@ cd $GOPATH/src/github.com/azure-samples/azure-sdk-for-go-samples/quickstarts/dep
 go run main.go
 ```
 
-Dağıtımda bir hata varsa bir sorun olduğunu belirten ancak yeterli ayrıntıları içermemiş olabilen bir ileti alırsınız. Azure CLI’yı kullanarak aşağıdaki komut ile dağıtım hatasının tam ayrıntılarını alın:
-
-```azurecli-interactive
-az group deployment show -g GoVMQuickstart -n VMDeployQuickstart
-```
-
-Dağıtım başarılı olursa yeni oluşturulan sanal makinede oturum açmak için kullanıcı adını, IP adresini ve parolayı sunan bir ileti görürsünüz. Çalışır durumda olduğunu onaylamak için bu makinede SSH işlemi yapın.
+Dağıtım başarılı olursa yeni oluşturulan sanal makinede oturum açmak için kullanıcı adını, IP adresini ve parolayı sunan bir ileti görürsünüz. Makineye SSH ile bağlanarak çalışır durumda olduğundan emin olun. 
 
 ## <a name="cleaning-up"></a>Temizleme
 
@@ -77,6 +73,18 @@ CLI ile kaynak grubunu silerek bu hızlı başlangıç sırasında oluşturulan 
 ```azurecli-interactive
 az group delete -n GoVMQuickstart
 ```
+
+Ayrıca oluşturulmuşsa hizmet sorumlusunu silin. `quickstart.auth` dosyasında `clientId` için bir JSON anahtarı bulunur. Bu değeri `CLIENT_ID_VALUE` ortam değişkenine kopyalayın ve aşağıdaki Azure CLI komutunu çalıştırın:
+
+```azurecli-interactive
+az ad sp delete --id ${CLIENT_ID_VALUE}
+```
+
+Burada `quickstart.auth` ile alınan `CLIENT_ID_VALUE` değerini belirtmeniz gerekir.
+
+> [!WARNING]
+> Bu uygulamanın hizmet sorumlusunu silmezseniz Azure Active Directory kiracınızda etkin bir şekilde bırakılır.
+> Hizmet sorumlusunun adı ve parolası UUID olarak oluşturuluyor olsa da kullanılmayan hizmet sorumlularını ve Azure Active Directory uygulamalarını silerek güvenlik açısından sorun yaratmalarını önleyebilirsiniz.
 
 ## <a name="code-in-depth"></a>Kod ayrıntıları
 
@@ -111,7 +119,7 @@ var (
 
 Oluşturulan kaynakların adlarını veren değerler bildirilir. Burada konum da belirtilir; dağıtımların diğer veri merkezlerinde nasıl davrandığını görmek için konumu değiştirebilirsiniz. Her veri merkezinde tüm gerekli kaynaklar mevcut değildir.
 
-`clientInfo` türü, SDK’da istemcileri ve VM parolasını ayarlamak üzere kimlik doğrulama dosyasından bağımsız olarak yüklenmesi gereken bilgileri kapsayacak şekilde bildirilmiştir.
+`clientInfo` türü, SDK’da istemcileri ve VM parolasını ayarlamak üzere kimlik doğrulama dosyasından yüklenen bilgileri barındırır.
 
 `templateFile` ve `parametersFile` sabitleri, dağıtım için gerekli dosyaları işaret eder. `authorizer` değişkeni kimlik doğrulaması için Go SDK’sı tarafından yapılandırılır ve `ctx` değişkeni ise ağ işlemleri için bir [Go bağlamıdır](https://blog.golang.org/context).
 
@@ -170,7 +178,7 @@ Kodun çalıştırılma adımları sırayla şöyledir:
 * Bu grup (`createDeployment`) içinde dağıtımı oluşturma
 * Dağıtılan VM (`getLogin`) için oturum açma bilgilerini alma ve görüntüleme
 
-### <a name="creating-the-resource-group"></a>Kaynak grubunu oluşturma
+### <a name="create-the-resource-group"></a>Kaynak grubunu oluşturma
 
 `createGroup` işlevi, kaynak grubunu oluşturur. Çağrı akışına ve bağımsız değişkenlere bakılarak, SDK’da hizmet etkileşimlerinin yapılandırılma şekli görülebilir.
 
@@ -197,7 +205,7 @@ Bir Azure hizmetiyle etkileşim kurmanın genel akışı şöyledir:
 
 `groupsClient.CreateOrUpdate` yöntemi, kaynak grubunu temsil eden bir veri türüne işaretçiyi döndürür. Bu tür bir doğrudan dönüş değeri, zaman uyumlu olacak şekilde tasarlanmış kısa süreli bir işlemi belirtir. Sonraki bölümde, uzun süreli bir işlem örneğini ve bunlarla nasıl etkileşim kurulacağını göreceksiniz.
 
-### <a name="performing-the-deployment"></a>Dağıtımı gerçekleştirme
+### <a name="perform-the-deployment"></a>Dağıtımı gerçekleştirme
 
 Kaynak grubu oluşturulduktan sonra sıra dağıtımı çalıştırmaya gelir. Bu kod, mantığının farklı kısımlarını vurgulamak için daha küçük bölümlere ayrılmıştır.
 
@@ -254,20 +262,13 @@ En büyük fark, `deploymentsClient.CreateOrUpdate` yönteminin dönüş değeri
     if err != nil {
         return
     }
-    deployment, err = deploymentFuture.Result(deploymentsClient)
-
-    // Work around possible bugs or late-stage failures
-    if deployment.Name == nil || err != nil {
-        deployment, _ = deploymentsClient.Get(ctx, resourceGroupName, deploymentName)
-    }
-    return
+    return deploymentFuture.Result(deploymentsClient)
+}
 ```
 
 Bu örnek için yapılacak en iyi şey, işlemin tamamlanmasını beklemektir. Vadeli işlemin beklenmesi için hem bir [bağlam nesnesi](https://blog.golang.org/context) hem de `Future` nesnesini oluşturan istemci gerekir. Burada iki olası hata kaynağı vardır: Yöntem çağrılmaya çalışılırken istemci tarafında bir hataya yol açılmıştır ve sunucudan bir hata yanıtı alınmıştır. İkinci durum, `deploymentFuture.Result` çağrısının parçası olarak döndürülür.
 
-Dağıtım bilgileri alındıktan sonra, verilerin doldurulduğundan emin olmak için `deploymentsClient.Get` işlevine yönelik el ile bir çağrıyla dağıtım bilgilerinin boş olduğu olası hatalar için geçici bir çözüm bulunur.
-
-### <a name="obtaining-the-assigned-ip-address"></a>Atanan IP adresini alma
+### <a name="get-the-assigned-ip-address"></a>Atanan IP adresini alma
 
 Yeni oluşturulan VM ile herhangi bir şey yapmak için atanan IP adresi gerekir. IP adresleri, Ağ Arabirim Denetleyicisi (NIC) kaynaklarına bağlı olan kendi ayrı Azure kaynaklarıdır.
 
@@ -301,7 +302,7 @@ VM kullanıcısının değeri de ayrıca JSON’dan yüklenir. VM parolası, kim
 
 ## <a name="next-steps"></a>Sonraki adımlar
 
-Bu hızlı başlangıçta, mevcut bir şablonu alıp Go aracılığıyla dağıttınız. Sonra, çalıştığından emin olmak için yeni oluşturulan sanal makineye SSH aracılığıyla bağlandınız.
+Bu hızlı başlangıçta, mevcut bir şablonu alıp Go aracılığıyla dağıttınız. Sonra, yeni oluşturulan sanal makineye SSH aracılığıyla bağlandınız.
 
 Go ile Azure ortamında sanal makinelerle çalışma hakkında bilgi edinmeye devam etmek için [Go için Azure bilgi işlem örnekleri](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/compute) veya [Go için Azure kaynak yönetimi örnekleri](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/resources) bölümüne bakın.
 
