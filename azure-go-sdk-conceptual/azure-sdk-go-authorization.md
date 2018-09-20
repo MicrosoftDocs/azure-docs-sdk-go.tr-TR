@@ -11,12 +11,12 @@ ms.technology: azure-sdk-go
 ms.devlang: go
 ms.service: active-directory
 ms.component: authentication
-ms.openlocfilehash: 28fd4a4c0832ab19dcf52dc549d0ddc0d1eec6f1
-ms.sourcegitcommit: 8b9e10b960150dc08f046ab840d6a5627410db29
+ms.openlocfilehash: 8f94b9ba715c32263d324306cce69bd484c05702
+ms.sourcegitcommit: c435f6602524565d340aac5506be5e955e78f16c
 ms.translationtype: HT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 09/07/2018
-ms.locfileid: "44059110"
+ms.lasthandoff: 09/12/2018
+ms.locfileid: "44711983"
 ---
 # <a name="authentication-methods-in-the-azure-sdk-for-go"></a>Go için Azure SDK’da kimlik doğrulama yöntemleri
 
@@ -30,7 +30,7 @@ Go için Azure SDK, farklı kimlik bilgileri kümeleri kullanarak birkaç farkl�
 |---------------------|---------------------|
 | Sertifika tabanlı kimlik doğrulaması | Azure Active Directory (AAD) kullanıcısı veya hizmet sorumlusu için yapılandırılmış bir X509 sertifikasına sahipsiniz. Daha fazla bilgi için bkz. [Azure Active Directory’de sertifika tabanlı kimlik doğrulamayı kullanmaya başlama]. |
 | İstemci kimlik bilgileri | Bu uygulamaya veya ait olduğu uygulama sınıfına ayarlı yapılandırılmış bir hizmet sorumlusuna sahipsiniz. Daha fazla bilgi için bkz. [Azure CLI ile hizmet sorumlusu oluşturma]. |
-| Yönetilen Hizmet Kimliği (MSI) | Uygulamanız, Yönetilen Hizmet Kimliği (MSI) ile yapılandırılmış bir Azure kaynak üzerinde çalışıyor. Daha fazla bilgi için bkz. [Azure kaynakları için Yönetilen Hizmet Kimliği (MSI)]. |
+| Azure kaynakları için yönetilen kimlikler | Uygulamanız, yönetilen kimlik ile yapılandırılmış bir Azure kaynağı üzerinde çalışıyor. Daha fazla bilgi için bkz. [Azure kaynakları için yönetilen kimlikler]. |
 | Cihaz belirteci | Uygulamanız __yalnızca__ etkileşimli olarak kullanılacak şekilde tasarlanmıştır. Kullanıcılarda çok faktörlü kimlik doğrulaması etkin olabilir. Kullanıcıların oturum açmak için bir web tarayıcısına erişimi olur. Daha fazla bilgi için bkz. [Cihaz belirteci kimlik doğrulaması kullanma](#use-device-token-authentication).|
 | Kullanıcı adı/parola | Başka herhangi bir kimlik doğrulama yöntemi kullanamayan etkileşimli bir uygulamaya sahipsiniz. Kullanıcılarınızın çok faktörlü kimlik doğrulaması özelliği AAD oturum açma işlemleri için etkinleştirilmemiş. |
 
@@ -42,7 +42,7 @@ Go için Azure SDK, farklı kimlik bilgileri kümeleri kullanarak birkaç farkl�
 
 [Azure Active Directory’de sertifika tabanlı kimlik doğrulamayı kullanmaya başlama]: /azure/active-directory/active-directory-certificate-based-authentication-get-started
 [Azure CLI ile hizmet sorumlusu oluşturma]: /cli/azure/create-an-azure-service-principal-azure-cli
-[Azure kaynakları için Yönetilen Hizmet Kimliği (MSI)]: /azure/active-directory/managed-service-identity/overview
+[Azure kaynakları için yönetilen kimlikler]: /azure/active-directory/managed-identities-azure-resources/overview
 
 Bu kimlik doğrulama türleri farklı yöntemler üzerinden kullanılabilir.
 
@@ -65,7 +65,7 @@ Ortam tabanlı kimlik doğrulamanın, cihaz belirteçleri hariç şu sırayla de
 * İstemci kimlik bilgileri
 * X509 sertifikaları
 * Kullanıcı adı/parola
-* Yönetilen Hizmet Kimliği (MSI)
+* Azure kaynakları için yönetilen kimlikler
 
 Bir kimlik doğrulama türü ayarlanmamış değerlere sahipse veya reddedilirse SDK otomatik olarak bir sonraki kimlik doğrulama türünü dener. Denenecek tür kalmadığında SDK bir hata döndürür.
 
@@ -84,7 +84,7 @@ Aşağıdaki tabloda ortam tabanlı kimlik doğrulama tarafından desteklenen he
 | | `AZURE_CLIENT_ID` | Uygulama istemci kimliği. |
 | | `AZURE_USERNAME` | Oturum açmada kullanılan kullanıcı adı. |
 | | `AZURE_PASSWORD` | Oturum açmada kullanılan parola. |
-| __MSI__ | | MSI kimlik doğrulama için kimlik bilgilerine ihtiyaç duyulmaz. Uygulama, MSI kullanmak üzere yapılandırılmış bir Azure kaynağında çalışıyor olmalıdır. Ayrıntılı bilgi için bkz. [Azure kaynakları için Yönetilen Hizmet Kimliği (MSI)]. |
+| __Yönetilen kimlik__ | | Yönetilen kimlik doğrulaması için kimlik bilgilerine ihtiyaç duyulmaz. Uygulama, yönetilen kimlikleri kullanmak üzere yapılandırılmış bir Azure kaynağında çalışıyor olmalıdır. Ayrıntılar için bkz. [Azure kaynakları için yönetilen kimlikler]. |
 
 Varsayılan Azure genel bulut dışında başka bir bulut ya da yönetim uç noktasına bağlanmak için aşağıdaki ortam değişkenlerini ayarlayın. En yaygın nedenler, Azure Stack, farklı bir coğrafi bölgede bulut veya klasik dağıtım modeli kullanmaktır.
 
@@ -168,7 +168,7 @@ Aşağıdaki tabloda SDK’da `AuthorizerConfig` arabirimiyle uyumlu olan türle
 |---------------------|-----------------------|
 | Sertifika tabanlı kimlik doğrulaması | [ClientCertificateConfig] |
 | İstemci kimlik bilgileri | [ClientCredentialsConfig] |
-| Yönetilen Hizmet Kimliği (MSI) | [MSIConfig] |
+| Azure kaynakları için yönetilen kimlikler | [MSIConfig] |
 | Kullanıcı adı/parola | [UsernamePasswordConfig] |
 
 [ClientCertificateConfig]: https://godoc.org/github.com/Azure/go-autorest/autorest/azure/auth#ClientCertificateConfig
