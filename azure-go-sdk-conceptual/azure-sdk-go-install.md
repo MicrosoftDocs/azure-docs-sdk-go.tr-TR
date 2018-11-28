@@ -9,12 +9,12 @@ ms.topic: conceptual
 ms.prod: azure
 ms.technology: azure-sdk-go
 ms.devlang: go
-ms.openlocfilehash: 013a771345d96f0fa8dbece3218a01650744f70b
-ms.sourcegitcommit: 8b9e10b960150dc08f046ab840d6a5627410db29
-ms.translationtype: HT
+ms.openlocfilehash: 7990ec8bde5622078aa822fc7e66ba5c4384d682
+ms.sourcegitcommit: 3d26b464f196f8675c636ae792637d4c882fb92c
+ms.translationtype: MT
 ms.contentlocale: tr-TR
-ms.lasthandoff: 09/07/2018
-ms.locfileid: "44059195"
+ms.lasthandoff: 11/27/2018
+ms.locfileid: "52337152"
 ---
 # <a name="install-the-azure-sdk-for-go"></a>Go için Azure SDK’yı yükleme
 
@@ -90,7 +90,7 @@ Go için Azure SDK’yı kullanmaya başlamak için hızlı başlangıcı deneyi
 
 Go SDK’daki diğer hizmetleri hemen kullanmaya başlamak isterseniz kullanılabilir örnek kodlardan bazılarına göz atın.
 
-* [Azure hizmetleri ile kimlik doğrulaması](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/iam)
+* [Azure hizmetleri ile kimlik doğrulaması](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/internal/iam)
 * [SSH kimlik doğrulaması ile yeni sanal makineleri dağıtma](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/compute)
 * [Azure Container Instances’a kapsayıcı görüntüsü dağıtma](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/containerinstance)
 * [Azure Kubernetes Hizmeti’nde küme oluşturma](https://github.com/Azure-Samples/azure-sdk-for-go-samples/tree/master/containerservice)
