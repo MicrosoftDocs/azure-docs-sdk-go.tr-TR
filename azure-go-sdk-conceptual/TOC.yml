@@ -19,7 +19,7 @@ items:
         href: /azure/postgresql/connect-go?toc=%2fgo%2fazure%2ftoc.json
       - name: MySQL için Azure Veritabanı
         href: /azure/mysql/connect-go?toc=%2fgo%2fazure%2ftoc.json
-      - name: Azure SQL Database
+      - name: Azure SQL Veritabanı
         href: /azure/sql-database/sql-database-connect-query-go?toc=%2fgo%2fazure%2ftoc.json
   - name: Go Kod Örnekleri
     items:
@@ -29,7 +29,7 @@ items:
         href: azure-sdk-go-containers-samples.md
       - name: İşlem ve ağ
         href: azure-sdk-go-compute-networking-samples.md
-      - name: Azure SQL Database
+      - name: Azure SQL Veritabanı
         href: azure-sdk-go-sql-database-samples.md
       - name: Tüm Go Örnekleri
         href: 'http://github.com/azure-samples/azure-sdk-for-go-samples'
